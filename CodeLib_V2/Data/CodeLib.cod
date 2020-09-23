@@ -1,0 +1,3122 @@
+0
+BoxGradient
+Public Sub BoxGradient(OBJ As Object, R%, G%, B%, RStep%, GStep%, BStep%, Direc As Boolean)
+Dim s%, xpos%, ypos%
+OBJ.ScaleMode = 3 'pixel
+If Direc = True Then
+RStep% = -RStep%
+GStep% = -GStep%
+BStep% = -BStep%
+End If
+DoBox:
+s% = s% + 1
+If xpos% < Int(OBJ.ScaleWidth / 2) Then xpos% = s%
+If ypos% < Int(OBJ.ScaleHeight / 2) Then ypos% = s%
+OBJ.Line (xpos%, ypos%)-(OBJ.ScaleWidth - xpos%, OBJ.ScaleHeight - ypos%), RGB(R%, G%, B%), B
+R% = R% - RStep%
+If R% < 0 Then R% = 0
+If R% > 255 Then R% = 255
+G% = G% - GStep%
+If G% < 0 Then G% = 0
+If G% > 255 Then G% = 255
+B% = B% - BStep%
+If B% < 0 Then B% = 0
+If B% > 255 Then B% = 255
+If xpos% = Int(OBJ.ScaleWidth / 2) And ypos% = Int(OBJ.ScaleHeight / 2) Then Exit Sub
+GoTo DoBox
+End Sub
+÷÷÷÷÷÷
+BoxGradient
+
+Fills the form or picturebox with a gradient in a box.
+
+Syntax:  BoxGradient(Object, R%, G%, B%, RStep%, GStep%, BStep%, Direc As Boolean)
+
+Object: Form or PictureBox (must support the line-method)
+R: Red component of the starting color
+G: Green component of the starting color
+B: Blue component of the starting color
+RStep: The value substracted from the Red-component
+GStep: The value substracted from the Green-component
+BStep: The value substracted from the Blue-component
+Direc: True or False
+              True: Gives the steps a negative value
+              False: Gives the steps a positive value
+
+Examples:
+
+Call BoxGradient(Form1, 64, 128, 240, 5, 3, 2, True)
+Call BoxGradient(Picture1, 240, 128, 64, 2, 3, 4, False)
+÷÷÷÷÷÷
+AutoRedraw of the Form/PictureBox must be set to True
+
+Coded by Stephan Swervaegher
+÷÷÷÷÷÷
+ 3 
+Euro
+Public Function Euro(EuroFix As Variant, Amount As Variant) As Variant
+Euro = Format(Amount / EuroFix, "#0.00")
+End Function
+÷÷÷÷÷÷
+This function calculates the amount of
+Euro for a given amount of money
+
+Example (for Belgium):
+
+Dim A%
+
+A = Euro(40.3399,1000)
+
+40.3399 is the fix
+1000 = 1000 Bfr
+
+A will be 24.79 Euro
+
+
+÷÷÷÷÷÷
+Only for certain countries in Europe.
+
+Code provided by Stephan Swertvaegher
+÷÷÷÷÷÷
+0
+ColBar
+Public Sub ColBar(Obj As Object, St%, H%, R%, G%, B%, RE%, GE%, BE%)
+Dim H2%, H3%, IvR%, IvG%, IvB%
+Obj.AutoRedraw = True
+Obj.ScaleMode = 3 'pixel
+H3 = Int(H / 2)
+IvR = Int(RE - R) / H3
+IvG = Int(GE - G) / H3
+IvB = Int(BE - B) / H3
+Do While H >= H3
+Obj.Line (0, St + H2)-(Obj.ScaleWidth, St + H2), RGB(R, G, B)
+Obj.Line (0, St + H)-(Obj.ScaleWidth, St + H), RGB(R, G, B)
+H = H - 1
+H2 = H2 + 1
+R = R + IvR
+G = G + IvG
+B = B + IvB
+Loop
+End Sub
+÷÷÷÷÷÷
+Colbar
+
+Puts a gradient bar on the screen.
+
+Syntax: Call ColBar(Object, St, H, R, G, B, RE, GE, BE)
+
+Object: Form or PictureBox (must support the line-method)
+St: Start in pixels of the ColBar
+H: Height of the ColBar
+R: Red component of the starting color
+G: Green component of the starting color
+B: Blue component of the starting color
+RE: Red component of the ending color
+GE: Green component of the ending color
+BE: Blue component of the ending color
+
+Note:
+* The Object must be in ScaleMode = 3 (Pixels) and AutoRedraw = true
+* By setting the starting values of R, G, and B bigger than the
+  ending values, you create a negative ColBar.
+* The values of R, G, and B must not exceed 255.
+
+Examples:
+
+Call ColBar(Form1, 0, 50, 64, 0, 64, 255, 5, 200)
+Call ColBar(Form1, 200, 60, 255, 184, 255, 55, 55, 140) 'negative colorbar!
+
+÷÷÷÷÷÷
+Coded by Stephan Swervaegher
+÷÷÷÷÷÷
+ 4 
+EqualColor
+Private Function EqColors(Obj As Form)
+For Each Control In Obj.Controls
+On Error Resume Next
+    Control.BackColor = Obj.BackColor
+Next Control
+End Function
+÷÷÷÷÷÷
+Equals all backcolors of the controls to the
+backcolor of the form.
+An error handler is build in, so if this function meets a control with no
+backcolor-property, this control will be skipped.
+
+Example:
+
+EqColors Form1
+
+
+This will equal all controls in Form1
+÷÷÷÷÷÷
+This function can also be done like this:
+
+Private Function EqColors(Obj As Form, EqColR%, EqColG%, EqColB%)
+For Each Control In Obj.Controls
+On Error Resume Next
+    Control.BackColor = RGB(EqColR, EqColG, EqColB)
+Next Control
+End Function
+
+Here you give the R, G and B-values to the function.
+All controls on the form will have the same color, specified by R,G and B
+
+Example:
+
+EqColors Form1, 128,64,192
+÷÷÷÷÷÷
+1
+FileExists
+Private Function FileExists(QVBestand$) As Boolean
+    FileExists = (Dir(QVBestand) <> "")
+End Function
+÷÷÷÷÷÷
+FileExists
+
+Syntax: FileExists (Path)
+
+Returns True if File exists
+Returns False if file doesn't exist
+
+Example:
+
+Dim Temp as Boolean
+Temp = FileExists(C:\MyPath\Picture.jpg)
+If Temp = False then Exit Sub
+MsgBox("This File exists !") 'Temp = True
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+0
+3D-Text
+Public Sub Rel3D(Obj As Object, Txt$, CX%, CY%, Sh As Long, Fc As Long)
+Dim KL%
+Obj.ForeColor = Sh
+For KL = 1 To 3
+Obj.CurrentX = CX + KL
+Obj.CurrentY = CY + KL
+Obj.Print Txt
+Next KL
+Obj.ForeColor = Fc
+Obj.CurrentX = CX
+Obj.CurrentY = CY
+Obj.Print Txt
+End Sub
+÷÷÷÷÷÷
+3D-Text
+
+Prints text with a shadow
+
+Syntax: Rel3D(Object, Txt, CX, CY, Sh, Fc)
+
+Object: Form or PictureBox
+Txt: The string to be printed
+CX CY: X and Y-coordinates (= CurrentX and CurrentY)
+Sh: The color of the shadow (as long)
+Fc: The ForeColor of the printed text (as long)
+
+Example:
+
+Call Rel3D(Form1, "This is a test", 100, 50, &H0, &HFF0000)
+
+÷÷÷÷÷÷
+Coded by Stephan Swervaegher
+÷÷÷÷÷÷
+ 3 
+HexToRGB
+Private Function HexToRGB(H As String) As Currency
+' Converts Hexidecimal to RGB
+
+On Error GoTo error
+Dim Tmp$
+Dim lo1 As Integer, lo2 As Integer
+Dim hi1 As Long, hi2 As Long
+Const Hx = "&H"
+Const BigShift = 65536
+Const LilShift = 256, Two = 2
+Tmp = H
+If UCase(Left$(H, 2)) = "&H" Then Tmp = Mid$(H, 3)
+Tmp = Right$("0000000" & Tmp, 8)
+If IsNumeric(Hx & Tmp) Then
+lo1 = CInt(Hx & Right$(Tmp, Two))
+hi1 = CLng(Hx & Mid$(Tmp, 5, Two))
+lo2 = CInt(Hx & Mid$(Tmp, 3, Two))
+hi2 = CLng(Hx & Left$(Tmp, Two))
+HexToRGB = CCur(hi2 * LilShift + lo2) * BigShift + (hi1 * LilShift) + lo1
+End If
+Exit Function
+error:  MsgBox Err.Description, vbExclamation, "Error"
+End Function
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+Code from Planet Source
+
+Not sure if this works properly...
+÷÷÷÷÷÷
+2
+SoundPlay
+Declare Function sndPlaySound Lib "winmm" Alias "sndPlaySoundA" (ByVal lpszSoundName As String, ByVal uFlags As Long) As Long
+Public Const snd_sync = &H0
+Public Const snd_async = &H1
+Public Const snd_loop = &H8
+Public Const snd_Alias = &H10000
+Public Const snd_filename = &H20000 
+Public Const snd_loop = &H8 
+Public Const snd_nodefault = &H2 
+Public Const snd_nostop = &H10 
+Public Const snd_nowait = &H2000 
+
+
+÷÷÷÷÷÷
+sndPlaySound
+
+Zero or more of the following flags specifying how to play the sound: 
+SND_ALIAS = &H10000 'Play a Windows sound (such as SystemStart, Asterisk, etc.). 
+SND_ASYNC = &H1 'Continue program execution immediately after starting to play the sound. 
+SND_FILENAME = &H20000 'Play the specified filename. 
+SND_LOOP = &H8 'Play the sound repeatedly until sndPlaySound is called again with lpszSoundName = "". SND_ASYNC must also be set. 
+SND_NODEFAULT = &H2 'Do not play the Windows default sound if the specified sound cannot be found. 
+SND_NOSTOP = &H10 'Do not stop playing any currently playing sounds. 
+SND_NOWAIT = &H2000 'Do not wait if the sound driver is busy. 
+SND_SYNC = &H0 'Wait until the sound has finished playing before continuing program execution. 
+
+Example:
+
+Private Sub Command1_Click()
+WaveName = "C:\WavFiles\Horn.wav"
+Call PLAY
+End Sub
+
+'in a module
+Public RC
+Public WavName As String 'A folder, containing a .WAV-file
+
+Sub PLAY(sndnr As Integer, snd As Integer)
+RC = sndPlaySound(WavName, 1)
+End Sub
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 3 
+CalculateRoot
+Private Function CalcRoot(power As Variant, numb As Variant) As Variant
+CalcRoot = numb ^ (1 / power)
+End Function
+÷÷÷÷÷÷
+CalcRoot Function
+
+Calculates the n-root
+
+Syntax: CalcRoot(power, number)
+
+Returns: The calculation as a variant
+
+Example:
+
+Dim A as Variant
+A = CalcRoot(5, 9765625)
+
+' A will contain 25
+÷÷÷÷÷÷
+Coded by Stephan Swertvaegher
+÷÷÷÷÷÷
+ 5 
+HoldChr
+Public Function HoldChar(Char%, HoldString) As Integer
+Dim Hc%
+For Hc = 1 To Len(HoldString)
+If Char = Asc(Mid(HoldString, Hc, 1)) Then
+HoldChar = 0
+Exit For
+Else
+HoldChar = Char
+End If
+Next Hc
+End Function
+÷÷÷÷÷÷
+HoldChr
+
+Makes sure certain characters cannot be typed.
+
+Syntax: HoldChr(Char, HoldString)
+
+Char: The Ascii-value
+HoldString: A String that contains all of the characters that cannot be typed
+
+Remarks:
+* The HoldChr must be called from KeyPress-Event of a textbox
+
+Example:
+
+Private Sub Text1_KeyPress(KeyAscii As Integer)
+KeyAscii = HoldChar(KeyAscii, "acegikm")
+'does not type a, c, e, g, i, k, m
+End Sub
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 3 
+HexColor
+Private Function HexColor(Red%, Green%, Blue%) As String
+'returns the RGB colors as a Hexadecimal string
+HexColor = Hex(Blue)
+HexColor = HexColor + Hex(Green)
+HexColor = HexColor + Hex(Red)
+End Function
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+Code provided by Stephan Swertvaegher
+÷÷÷÷÷÷
+0
+Border
+Public Sub ColForm(Obj As Object, R%, G%, B%, Step%)
+Dim R1%, G1%, B1%, R2%, G2%, B2%
+Obj.ScaleMode = 3 'pixels
+Obj.AutoRedraw = True 'very important !
+Obj.BackColor = RGB(R%, G%, B%)
+R1% = R% + Step%: If R1% > 255 Then R1% = 255
+G1% = G% + Step%: If G1% > 255 Then G1% = 255
+B1% = B% + Step%: If B1% > 255 Then B1% = 255
+R2% = R% - Step%: If R2% < 0 Then R2% = 0
+G2% = G% - Step%: If G2% < 0 Then G2% = 0
+B2% = B% - Step%: If B2% < 0 Then B2% = 0
+Obj.Line (2, 2)-(Obj.ScaleWidth - 2, Obj.ScaleHeight - 2), RGB(R1%, G1%, B1%), B
+Obj.Line (Obj.ScaleWidth - 2, 2)-(Obj.ScaleWidth - 2, Obj.ScaleHeight - 1), RGB(R2%, G2%, B2%)
+Obj.Line (1, Obj.ScaleHeight - 2)-(Obj.ScaleWidth - 2, Obj.ScaleHeight - 2), RGB(R2%, G2%, B2%)
+Obj.Line (5, 5)-(Obj.ScaleWidth - 5, Obj.ScaleHeight - 5), RGB(R2%, G2%, B2%), B
+Obj.Line (Obj.ScaleWidth - 5, 6)-(Obj.ScaleWidth - 5, Obj.ScaleHeight - 4), RGB(R1%, G1%, B1%)
+Obj.Line (5, Obj.ScaleHeight - 5)-(Obj.ScaleWidth - 5, Obj.ScaleHeight - 5), RGB(R1%, G1%, B1%)
+End Sub
+÷÷÷÷÷÷
+ColForm
+
+Puts a 3D-border arround the screen.
+
+Syntax: Call ColForm(Obj As Object, R%, G%, B%, Step%)
+
+Object: Form or PictureBox (must support the line-method)
+R: Red component of the form-color
+G: Green component of the form-color
+B: Blue component of the form-color
+Step: The step to lighten and darken the border
+
+Note:
+* The Object must be in ScaleMode = 3 (Pixels) and AutoRedraw = true
+* The values of R, G, and B must not exceed 255.
+
+Examples:
+
+Call ColForm(Form1, 192, 192, 192, 75)
+Call ColForm(Form1, 40, 192, 128, 35)
+
+÷÷÷÷÷÷
+Coded by Stephan Swervaegher
+
+The best effect is with a form-borderstyle of 0 (no border).
+÷÷÷÷÷÷
+0
+Gradient
+Public Sub Gradient(Obj As Object, R1 As Single, G1 As Single, B1 As Single, R2 As Single, G2 As Single, B2 As Single, Angle as Boolean)
+Dim R, G, B As Single
+Dim Wi%
+Obj.AutoRedraw = True
+Obj.ScaleMode = 3
+If Angle = False Then
+R = (R2 - R1) / Obj.ScaleHeight
+G = (G2 - G1) / Obj.ScaleHeight
+B = (B2 - B1) / Obj.ScaleHeight
+For Wi = 0 To Obj.ScaleHeight - 1
+Obj.Line (0, Wi)-(Obj.ScaleWidth - 1, Wi), RGB(R1, G1, B1)
+R1 = R1 + R
+G1 = G1 + G
+B1 = B1 + B
+Next Wi
+Exit Sub
+End If
+If Angle = True Then
+R = (R2 - R1) / Obj.ScaleWidth
+G = (G2 - G1) / Obj.ScaleWidth
+B = (B2 - B1) / Obj.ScaleWidth
+For Wi = 0 To Obj.ScaleWidth - 1
+Obj.Line (Wi, 0)-(Wi, Obj.ScaleHeight - 1), RGB(R1, G1, B1)
+R1 = R1 + R
+G1 = G1 + G
+B1 = B1 + B
+Next Wi
+Exit Sub
+End If
+End Sub
+÷÷÷÷÷÷
+Gradient
+
+Makes the Form (or PictureBox) gradient
+
+Syntax: Call Gradient(Object, R1, G1, B1, R2, G2, B2, Angle)
+
+Object: Form or PictureBox (must support the line-method)
+R1: Red component of the starting color
+G1: Green component of the starting color
+B1: Blue component of the starting color
+R2: Red component of the ending color
+G2: Green component of the ending color
+B2: Blue component of the ending color
+Angle: True or False
+                 True: Gradient from left to right
+                 False: Gradient from top to bottom
+
+Note:
+* The Object must be in ScaleMode = 3 (Pixels) and AutoRedraw = true
+* By setting the starting values of R, G, and B bigger than the
+  ending values, you create a negative ColBar.
+* The values of R, G, and B must not exceed 255.
+* For better calculations the values Of R1...B2 are Single.
+
+Examples:
+
+Call Gradient(Form1, 0, 50, 64, 0, 64, 255, True)
+Call Gradient(Picture1, 200, 60, 255, 184, 255, 55, False)
+
+
+
+÷÷÷÷÷÷
+Coded by Stephan Swervaegher
+÷÷÷÷÷÷
+ 5 
+CountLinesInTextbox
+Public Function CountLines(textBox As textBox) As Long
+    Dim A%, B$
+    A% = 1
+    B$ = textBox.Text
+    Do While InStr(B$, Chr$(13))
+        A% = A% + 1
+        B$ = Mid$(B$, InStr(B$, Chr$(13)) + 1)
+    Loop
+    CountLines = CStr(A%)
+End Function
+÷÷÷÷÷÷
+CountLinesInTextBox
+
+Syntax: CountLines( TextBox)
+
+Returns: The number of lines in a Multiline TextBox
+
+Example:
+
+Private Sub Text1_Change()
+Label1.Caption = Countlines(Text1)
+End Sub
+
+
+÷÷÷÷÷÷
+See for the same function in the API-routines
+
+÷÷÷÷÷÷
+0
+PointBar
+Public Sub PointBar(R%, G%, B%)
+Dim Step%, NewStep%, NewR%, NewG%, NewB%
+Label1.Width = Form1.ScaleWidth
+Label1.Top = 5
+Step = 12
+NewR = R
+NewG = G
+NewB = B
+For xx = 0 To 12
+Form1.Line (0 + NewStep, xx)-(Form1.ScaleWidth - NewStep, xx), RGB(NewR, NewG, NewB)
+Form1.Line (0 + NewStep, 25 - xx)-(Form1.ScaleWidth - NewStep, 25 - xx), RGB(NewR, NewG, NewB)
+NewStep = NewStep + Step
+NewR = NewR + 10
+If NewR > 255 Then NewR = 255
+NewG = NewG + 10
+If NewG > 255 Then NewG = 255
+NewB = NewB + 10
+If NewB > 255 Then NewB = 255
+Step = Step - 1
+Next xx
+End Sub
+÷÷÷÷÷÷
+PointBar module
+
+Draws a pointed bar on top of the screen with a fixed height of 25.
+
+Syntax: PointBar(R%, G%, B%)
+
+R, G and B are the RGB-colors of the pointbar
+
+Examples:
+
+Call PointBar(128, 40,255)
+Call PointBar(0,0,192)
+÷÷÷÷÷÷
+This gives a good effect with a form with no border and a
+label on top of the pointbar.
+The label must be transparent.
+
+Coded by Stephan Swervaegher
+÷÷÷÷÷÷
+ 4 
+T3D
+Public Enum T3dFill
+T3dF0
+T3dF1
+End Enum
+
+Public Enum Borderstyle
+T3dRaiseRaise
+T3dRaiseInset
+T3dInsetRaise
+T3dInsetInset
+T3dNone
+End Enum
+
+Public Function T3D(Obj0 As Object, Obj As Object, Bev%, Optional Style3D As Borderstyle, Optional T3dFilled As T3dFill)
+Dim R1%, G1%, B1%, R2%, G2%, B2%, R3%, G3%, B3%, R4%, G4%, B4%
+Dim T3Dxx%
+On Error Resume Next
+
+Obj.Borderstyle = 0 'no border
+
+If IsMissing(Style3D) Then Style3D = 0
+
+If Style3D > 4 Then Style3D = 3
+
+If Style3D = 0 Then 'RaiseRaise
+R1 = 240: R2 = 128: R3 = 240: R4 = 128
+End If
+If Style3D = 1 Then 'RaiseInset
+R1 = 240: R2 = 128: R4 = 240: R3 = 128
+End If
+If Style3D = 2 Then 'InsetRaise
+R2 = 240: R1 = 128: R3 = 240: R4 = 128
+End If
+If Style3D = 3 Then 'InsetInset
+R2 = 240: R1 = 128: R4 = 240: R3 = 128
+End If
+If Style3D = 4 Then 'No Border
+R1 = 192: R2 = 192: R3 = 192: R4 = 192
+End If
+
+G1 = R1: B1 = R1
+G2 = R2: B2 = R2
+G3 = R3: B3 = R3
+G4 = R4: B4 = R4
+Bev = Bev + 1
+T3Dxx = Bev
+'Outer
+If IsMissing(T3dFilled) Or T3dFilled = 0 Then
+    Obj0.Line (Obj.Left - Bev, Obj.Top - Bev)-(Obj.Left - Bev, Obj.Top + Obj.Height + Bev), RGB(R1, G1, B1)
+    Obj0.Line (Obj.Left - Bev, Obj.Top - Bev)-(Obj.Left + Obj.Width + Bev, Obj.Top - Bev), RGB(R1, G1, B1)
+    Obj0.Line (Obj.Left + Obj.Width + Bev, Obj.Top - Bev)-(Obj.Left + Obj.Width + Bev, Obj.Top + Obj.Height + Bev), RGB(R2, G2, B2)
+    Obj0.Line (Obj.Left - Bev, Obj.Top + Obj.Height + Bev)-(Obj.Left + Obj.Width + Bev + 1, Obj.Top + Obj.Height + Bev), RGB(R2, G2, B2)
+Else
+For Bev = T3Dxx To 1 Step -1
+    Obj0.Line (Obj.Left - Bev, Obj.Top - Bev)-(Obj.Left - Bev, Obj.Top + Obj.Height + Bev), RGB(R1, G1, B1)
+    Obj0.Line (Obj.Left - Bev, Obj.Top - Bev)-(Obj.Left + Obj.Width + Bev, Obj.Top - Bev), RGB(R1, G1, B1)
+    Obj0.Line (Obj.Left + Obj.Width + Bev, Obj.Top - Bev)-(Obj.Left + Obj.Width + Bev, Obj.Top + Obj.Height + Bev), RGB(R2, G2, B2)
+    Obj0.Line (Obj.Left - Bev, Obj.Top + Obj.Height + Bev)-(Obj.Left + Obj.Width + Bev + 1, Obj.Top + Obj.Height + Bev), RGB(R2, G2, B2)
+Next Bev
+End If
+'Inner
+    Obj0.Line (Obj.Left - 1, Obj.Top - 1)-(Obj.Left - 1, Obj.Top + Obj.Height + 1), RGB(R3, G3, B3)
+    Obj0.Line (Obj.Left - 1, Obj.Top - 1)-(Obj.Left + Obj.Width + 1, Obj.Top - 1), RGB(R3, G3, B3)
+    Obj0.Line (Obj.Left + Obj.Width + 1, Obj.Top - 1)-(Obj.Left + Obj.Width + 1, Obj.Top + Obj.Height + 1), RGB(R4, G4, B4)
+    Obj0.Line (Obj.Left - 1, Obj.Top + Obj.Height + 1)-(Obj.Left + Obj.Width + 2, Obj.Top + Obj.Height + 1), RGB(R4, G4, B4)
+End Function
+÷÷÷÷÷÷
+T3D function (Target 3D)
+
+Puts a 3D-border arround any control. This border has 2 levels: outer border and inner border.
+The border can be raised, inset or mixed, filled and not filled. It works only on a normal (standard)
+forms, with the backcolor RGB(192, 192, 192)
+
+Syntax: T3D Form, Control, Bevel, [Style], [Filled]
+
+The T3D function syntax has these named arguments:
+
+Form	The form where you want to have a 3D-control. The form must be in ScaleMode = 3 (Pixel)
+	and AutoRedraw = True.
+
+Control	The actual control to put in 3D. If you want a control in another form, you have
+                to specify this. Example: Form2.Label1 
+
+Bevel	The distance between the inner and outer border.
+
+Style	(Optional)The style of 3D, as described in settings. If you omit Style, it will be set
+                to 0 (RaiseRaise).
+
+Filled	(Optional) Filled between the inner and outer border, as described in settings. If you omit
+                Filled, it will be set to 0 (no fill).
+
+Settings
+The Style argument settings are:
+
+Constant		Value			Description
+
+T3dRaiseRaise	0			Inner raised and outer raised
+T3dRaiseInset	1			Inner raised and outer inset
+T3dInsetRaise	2			Inner inset and outer raised
+T3dInsetInset	3			Inner inset and outer inset
+T3dNone		4			No border at all
+Note: These constants are specified in the Subroutine.  As a result, the names
+can be used anywhere in your code in place of the actual values.
+
+The Filled argument settings are:
+
+Constant		Value			Description
+
+T3dF0		0			Not filled	
+T3dF1		1			Filled
+Note: These constants are specified in the Subroutine.  As a result, the names
+can be used anywhere in your code in place of the actual values.
+
+Examples:
+
+T3D Form1, Label1, 20, T3dRaiseRaise, T3dF0 
+T3D Form1, Label2, 8, 0, T3dF1
+T3D Form1, Text1, 3, T3dRaiseInset
+T3D Form2, Form2.text1, 5, T3dInsetInset, T3dF1 
+
+You can acces the routine with a variabele, but there will be no return-value.
+
+Dim A%
+A = T3D(Form1, Label1, 20, T3dRaiseRaise, T3dF0)
+
+÷÷÷÷÷÷
+Between the controls (label, textbox, ...), there must be a minimum distance
+of the Bevel-width you specified . 
+Important: if you specify a control in another form, you must specify that control too !
+Example: T3D Form2, Form2.label1, 5, T3dInsetInset, T3dF1
+If you don't that, for example, the border in form2 will be set according to the label in
+form1 !!!
+÷÷÷÷÷÷
+ 2 
+PicInvert
+Private Declare Function SetPixel Lib "gdi32" (ByVal hDC As Long, ByVal x As Long, ByVal y As Long, ByVal crColor As Long) As Long
+Private Declare Function GetPixel Lib "gdi32" (ByVal hDC As Long, ByVal x As Long, ByVal y As Long) As Long
+
+'The code:
+
+For x = 0 To Picture1.ScaleWidth
+For y = 0 To Picture1.ScaleHeight
+SetPixel Picture1.hDC, x, y, 16777215 - GetPixel(Picture1.hDC, x, y)
+Next y
+Next x
+Picture1.Refresh
+
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+Code from Planet Source
+Provided by  Tanner Helland
+÷÷÷÷÷÷
+ 0 
+RasGradient
+Public Sub RasGradient(OBJ As Object, R As Integer, G As Integer, B As Integer, RStep As Integer, Gstep As Integer, Bstep As Integer, Position As Boolean)
+Dim Count, xyz As Integer
+If Position = False Then 'top to bottom
+For Count = 0 To (OBJ.ScaleHeight / 2)
+OBJ.Line (0, xyz)-(OBJ.ScaleWidth, xyz), RGB(R, G, B)
+OBJ.Line (0, OBJ.ScaleHeight - xyz)-(OBJ.ScaleWidth, OBJ.ScaleHeight - xyz), RGB(R, G, B)
+xyz = xyz + 1
+R = R + RStep
+If R < 0 Then R = 0
+If R > 255 Then R = 255
+G = G + Gstep
+If G < 0 Then G = 0
+If G > 255 Then G = 255
+B = B + Bstep
+If B < 0 Then B = 0
+If B > 255 Then B = 255
+Next Count
+
+Else 'Position = True
+
+For Count = 0 To (OBJ.ScaleWidth / 2)
+OBJ.Line (xyz, 0)-(xyz, OBJ.ScaleHeight), RGB(R, G, B)
+OBJ.Line (OBJ.ScaleWidth - xyz, 0)-(OBJ.ScaleWidth - xyz, OBJ.ScaleHeight), RGB(R, G, B)
+xyz = xyz + 1
+R = R + RStep
+If R < 0 Then R = 0
+If R > 255 Then R = 255
+G = G + Gstep
+If G < 0 Then G = 0
+If G > 255 Then G = 255
+B = B + Bstep
+If B < 0 Then B = 0
+If B > 255 Then B = 255
+Next Count
+End If
+End Sub
+÷÷÷÷÷÷
+RasGradient
+
+If the position is False:
+Fills the Form or PictureBox with a gradient from top to middle with
+an increasing gradient, and from middle to bottom with a decreasing gradient.
+If the position is True:
+Fills the Form or PictureBox with a gradient from left to middle with
+an increasing gradient, and from middle to right with a decreasing gradient.
+
+Syntax: Call  RasGradient(Object, R, G, B, RStep, Gstep, Bstep, Position)
+
+Object: Form or PictureBox (must support the line-method)
+R: Red component of the starting color
+G: Green component of the starting color
+B: Blue component of the starting color
+Rstep: Increasing/decreasing value of the Red component
+Gstep: Increasing/decreasing value of the Green component
+Bstep: Increasing/decreasing value of the Blue component
+Position: True or False
+                 True: Gradient from left to right
+                 False: Gradient from top to bottom
+
+Note:
+* The Object must be in ScaleMode = 3 (Pixels) and AutoRedraw = true
+* By setting the starting values of R, G, and B bigger than the
+  ending values, you create a negative ColBar.
+* The values of R, G, and B must not exceed 255.
+
+
+Examples:
+
+Call RasGradient(Form1, 0, 50, 64, 0, 2, 3, True)
+Call RasGradient(Picture1, 200, 60, 255, 3, 2, 1, False)
+
+
+
+÷÷÷÷÷÷
+Coded by Stephan Swervaegher
+÷÷÷÷÷÷
+ 0 
+Rasters
+Public Sub Rasters(OBJ As Object, R As Integer, G As Integer, B As Integer, StepR As Integer, StepG As Integer, StepB As Integer, Style As Integer, Start As Integer, StepStart As Integer)
+Dim aa%, bb%, cc%, OriginR%, OriginG%, OriginB%
+aa% = 1: cc% = Start
+OriginR% = R: OriginG% = G: OriginB% = B
+If StepR > 25 Then StepR = 25
+If StepG > 25 Then StepG = 25
+If StepB > 25 Then StepB = 25
+If Style > 10 Then Style = 10
+If Start > 25 Then Start = 25
+If StepStart > 25 Then StepStart = 25
+OBJ.BackColor = RGB(0, 0, 0)
+OBJ.Cls
+Rasters0:
+    For bb% = 0 To cc%
+    OBJ.Line (0, aa%)-(OBJ.ScaleWidth, aa%), RGB(R, G, B)
+    OBJ.Line (0, OBJ.ScaleHeight - aa%)-(OBJ.ScaleWidth, OBJ.ScaleHeight - aa%), RGB(R, G, B)
+    R = R + StepR
+    If R > 255 Then R = 255
+    If R < 0 Then R = 0
+    G = G + StepG
+    If G > 255 Then G = 255
+    If G < 0 Then G = 0
+    B = B + StepB
+    If B > 255 Then B = 255
+    If B < 0 Then B = 0
+    If aa% = Int(OBJ.ScaleHeight / 2) Then
+    Exit Sub
+    Else
+    aa% = aa% + 1
+    End If
+    Next bb%
+    R = OriginR%
+    G = OriginG%
+    B = OriginB%
+    cc% = cc% + StepStart
+    If Style = 0 Then GoTo Rasters0
+    For bb% = 1 To Style
+        If aa% = Int(OBJ.ScaleHeight / 2) Then
+        Exit Sub
+        Else
+        aa% = aa% + 1
+        End If
+    Next bb%
+GoTo Rasters0
+rasters1:
+End Sub
+÷÷÷÷÷÷
+Rasters
+
+Syntax:  Rasters (Object, R, G, B, StepR, StepG, StepB, Style, Start, StepStart)
+Notes:
+Object must support the "Line"-method
+Object in Scalemode "Pixel"
+Object in "AutoRedraw = True"
+Object in "BackColor = Black"
+
+Returns: None
+Side effects: none
+
+Explanation:
+
+   Obj       = Object, a Form or a PictureBox
+   R         = Starting value of the red component (0 to 255)
+   G         = Starting value of the green component (0 to 255)
+   B         = Starting value of the blue component (0 to 255)
+   StepR     = Increment of the red component (-25 to 25)
+   StepG     = Increment of the green component (-25 to 25)
+   StepB     = Increment of the blue component (-25 to 25)
+   Style     = the number of lines to skip (0 to 10)
+   Start     = the start value of the number of rasters (0 to 25)
+   Stepstart = the increment of the number of rasters (0 to 25)
+
+ Remarks: The StepR, StepG and StepB can be negative !
+
+Example: 
+Call Rasters (Picture1, 64, 96, 128, 3, 2, 1, 1, 10, 5)
+
+÷÷÷÷÷÷
+Coded by Stephan Swervaegher
+÷÷÷÷÷÷
+ 2 
+ExplodeForm
+'Declarations for ExplodeForm
+Type RECT
+        Left As Long
+        Top As Long
+        Right As Long
+        Bottom As Long
+End Type
+Declare Function CreateSolidBrush Lib "gdi32" (ByVal crColor As Long) As Long
+Declare Function DeleteObject Lib "gdi32" (ByVal hObject As Long) As Long
+Declare Function GetDC Lib "user32" (ByVal hwnd As Long) As Long
+Declare Function GetWindowRect Lib "user32" (ByVal hwnd As Long, lpRect As RECT) As Long
+Declare Function ReleaseDC Lib "user32" (ByVal hwnd As Long, ByVal hdc As Long) As Long
+Declare Function SelectObject Lib "gdi32" (ByVal hdc As Long, ByVal hObject As Long) As Long  'note error in declare
+Declare Function Rectangle Lib "gdi32" (ByVal hdc As Long, ByVal X1 As Long, ByVal Y1 As Long, ByVal X2 As Long, ByVal Y2 As Long) As Long
+
+Sub ExplodeForm(frm As Form, Steps As Long, Color As Long)
+   Dim ThisRect As RECT, RectWidth As Integer, RectHeight As Integer, ScreenDevice As Long, NewBrush As Long, OldBrush As Long, I As Long, X As Integer, Y As Integer, XRect As Integer, YRect As Integer
+   If Steps < 20 Then Steps = 20
+   'Zooming speed will be different based on machine speed!
+   If Color = 0 Then
+      Color = frm.BackColor
+   End If
+   Steps = Steps * 10
+   'Get current form window dimensions
+   GetWindowRect frm.hwnd, ThisRect
+   RectWidth = (ThisRect.Right - ThisRect.Left)
+   RectHeight = ThisRect.Bottom - ThisRect.Top
+   'Get a device handle for the screen
+   ScreenDevice = GetDC(0)
+   'Create a brush for drawing to the screen
+   'and save the old brush
+   NewBrush = CreateSolidBrush(Color)
+   OldBrush = SelectObject(ScreenDevice, NewBrush)
+   For I = 1 To Steps
+      XRect = RectWidth * (I / Steps)
+      YRect = RectHeight * (I / Steps)
+      X = ThisRect.Left + (RectWidth - XRect) / 2
+      Y = ThisRect.Top + (RectHeight - YRect) / 2
+      'Incrementally draw rectangle
+      Rectangle ScreenDevice, X, Y, X + XRect, Y + YRect
+   Next I
+   'Return old brush and delete screen device context handle
+   'Then destroy brush that drew rectangles
+   Call SelectObject(ScreenDevice, OldBrush)
+   Call ReleaseDC(0, ScreenDevice)
+   DeleteObject (NewBrush)
+End Sub
+
+÷÷÷÷÷÷
+ExplodeForm
+
+Shows the form from nothing to full size according to the steps
+
+Syntax: ExplodeForm FormName, Steps, Color
+
+FormName: The name of the Form, as set in the properties
+Steps: Zooming speed
+Color: The color of the explosion
+
+Remarks: 
+* First of all, set the position of the form, before calling the ExplodeForm
+* Zooming speed will be different based on machine speed!
+* If Color = 0, then the Form BackColor will be applied
+* The ExplodeForm-Sub is best stored in a module
+
+Examples:
+
+ExplodeForm Me, 50, 0
+ExplodeForm Form1, 200, vbRed
+ExplodeForm Me, 500, RGB(64, 192,128)
+
+Example in the Form_Load Event:
+
+Private Sub Form_Load()
+'First, set the position of the form
+Me.Move (Screen.Width / 2) - (Me.Width / 2), (Screen.Height / 2) - (Me.Height / 2)
+'Next, call the ExplodeForm
+ExplodeForm Form1, 200, vbRed
+End Sub
+
+÷÷÷÷÷÷
+Code from Planet Source
+
+÷÷÷÷÷÷
+ 2 
+CountLinesInTextbox2
+Private Declare Function SendMessageAsLong Lib "user32"  Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+
+Public Function GetLineCount(C as Control)
+  Const EM_GETLINECOUNT = 186
+  GetLineCount = SendMessageAsLong(C.Hwnd, EM_GETLINECOUNT, 0, 0)
+End Function
+÷÷÷÷÷÷
+CountLinesInTextBox
+
+Counts the lines in a Multiline TextBox
+
+Syntax: GetLineCount(C)
+
+C: TextBox
+
+Example:
+
+Private Sub Text1_Change()
+Label1.Caption = GetLineCount(Text1)
+End Sub
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 4 
+SetLine
+Public Function Setline(OBJ As Object, LineY%, Optional LineStyle as Boolean)
+If IsMissing(LineStyle) then LineStyle = False
+If LineStyle = False Then
+OBJ.Line (0, LineY)-(OBJ.ScaleWidth, LineY), RGB(128, 128, 128)
+OBJ.Line (0, LineY + 1)-(OBJ.ScaleWidth, LineY + 1), RGB(240, 240, 240)
+Else
+OBJ.Line (0, LineY)-(OBJ.ScaleWidth, LineY), RGB(240, 240, 240)
+OBJ.Line (0, LineY + 1)-(OBJ.ScaleWidth, LineY + 1), RGB(128, 128, 128)
+End If
+End Function
+
+÷÷÷÷÷÷
+SetLine
+
+Sets a 3D line on the screen
+
+Syntax: Setline Object, Y, [LineStyle]
+
+Object: Form or PictureBox
+Y: The y-coordinate of the line to appear
+LineStyle: (Optional) True or False
+   True: Sets the line raised (default)
+   False: Sets the line inset
+
+Remarks:
+* The objects Scale-property must be set to 3 (pixel) and AutoRedraw = True
+* The LineStyle is False by default (inset)
+* Best effect with standard forms - with a grey background
+ 
+Examples
+
+SetLine Form1, 20 'sets a line on Form1, on Y-position = 20, inset
+SetLine Form2, 55, 1  'sets a line on Form2, on Y-position = 55, raisedt
+SetLine Picture1, 10, 0  'sets a line on Picture1, on Y-position = 10, inset
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 5 
+NumChr
+Public Function NumChr(Char%)
+If Char = 13 Or Char = 8 Then NumChr = Char: Exit Function 'detect enter & backspace
+If Char < 42 Or Char > 57 Then Char = 0
+NumChr = Char
+End Function
+÷÷÷÷÷÷
+NumChr
+
+Will type only the characters: * + , - . / 0 1 2 3 4 5 6 7 8 9
+This function must be called from the KeyPress-event
+This is usefull for textboxes where only numbers may be typed.
+
+Remark:
+
+The enter-code (13) and backspace-code (8) still works
+
+Example:
+
+Private Sub Text1_KeyPress(KeyAscii As Integer)
+KeyAscii = NulChr(KeyAscii)
+End Sub
+
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 5 
+UAscii
+Private Function UAscii(Key%) As Integer
+If Key > 96 And Key < 133 Then Key = Key - 32
+UAscii = Key
+End Function
+
+÷÷÷÷÷÷
+UAscii Function
+
+All characters are typed in upper-case
+When you type: abcde or AbCDe, the textbox displays always ABCDE
+
+Example:
+
+Private Sub Text1_KeyPress(KeyAscii As Integer)
+Keyascii = UAscii(KeyAscii)
+End Sub
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 4 
+Grad
+Public Enum DirecGrad
+Horiz
+Vertic
+End Enum
+
+Public Function Grad(Obj As Object, Col1 As Long, Col2 As Long, Optional Dgrad As DirecGrad)
+Dim R1, R2, G1, G2, B1, B2, Sr, Sg, Sb, H%, H2%, xxx%
+Dim R, G, B
+Dim TmpScale%
+On Error Resume Next
+If IsMissing(Dgrad) Then Dgrad = Horiz
+TmpScale = Obj.ScaleMode
+Obj.ScaleMode = 3
+Obj.AutoRedraw = True
+R1 = Col1 And &H800000FF
+R2 = Col2 And &H800000FF
+G1 = (Col1 And &H8000FF00) / &H100
+G2 = (Col2 And &H8000FF00) / &H100
+B1 = (Col1 And &H80FF0000) / &H10000
+B2 = (Col2 And &H80FF0000) / &H10000
+If Dgrad = Horiz Then
+H = Obj.ScaleHeight
+Else
+H = Obj.ScaleWidth
+End If
+Sr = (R2 - R1) / H
+Sg = (G2 - G1) / H
+Sb = (B2 - B1) / H
+For xxx = 0 To H
+If Dgrad = Horiz Then
+Obj.Line (0, xxx)-(Obj.ScaleWidth, xxx), RGB(R1, G1, B1)
+Else
+Obj.Line (xxx, 0)-(xxx, Obj.ScaleHeight), RGB(R1, G1, B1)
+End If
+R1 = R1 + Sr
+G1 = G1 + Sg
+B1 = B1 + Sb
+Next xxx
+Obj.ScaleMode = TmpScale
+End Function
+÷÷÷÷÷÷
+Grad Function
+
+Gradient a form or picturebox with two colors
+
+Syntax:  Grad Object, Col1, Col2, [Dgrad]
+
+Object: Form or PictureBox
+Col1: First color of the gradient - long value
+Col2: Second color of the gradient - long value
+Dgrad: Optional
+        Horiz: Horizontal gradient
+        Vertic: Vertical gradient
+
+Remarks:
+If Dgrad is omitted then the horizontal gradient will be executed
+
+Examples:
+
+Grad Form1, &HFF0080, &H8040&
+Grad Form1, &H40A0E0, &H8040FF, Vertic
+Grad Picture1, &H804080, &HFF&, Horiz
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 4 
+Grad3
+Public Enum DirecGrad
+Horiz
+Vertic
+End Enum
+
+Public Function Grad3(Obj As Object, Col1 As Long, Col2 As Long, Col3 As Long, Optional Dgrad As DirecGrad)
+Dim R1, R2, R3, G1, G2, G3, B1, B2, B3, Sr, Sg, Sb, H%, H2%, xxx%
+Dim R, G, B
+Dim TmpScale%
+On Error Resume Next
+If IsMissing(Dgrad) Then Dgrad = Horiz
+TmpScale = Obj.ScaleMode
+Obj.ScaleMode = 3
+Obj.AutoRedraw = True
+R1 = Col1 And &H800000FF
+R2 = Col2 And &H800000FF
+R3 = Col3 And &H800000FF
+G1 = (Col1 And &H8000FF00) / &H100
+G2 = (Col2 And &H8000FF00) / &H100
+G3 = (Col3 And &H8000FF00) / &H100
+B1 = (Col1 And &H80FF0000) / &H10000
+B2 = (Col2 And &H80FF0000) / &H10000
+B3 = (Col3 And &H80FF0000) / &H10000
+    If Dgrad = Horiz Then
+    H = Obj.ScaleHeight / 2
+    H2 = Obj.ScaleHeight
+    Else
+    H = Obj.ScaleWidth / 2
+    H2 = Obj.ScaleWidth
+    End If
+    
+    Sr = (R2 - R1) / H
+    Sg = (G2 - G1) / H
+    Sb = (B2 - B1) / H
+    For xxx = 0 To H
+    If Dgrad = Horiz Then
+    Obj.Line (0, xxx)-(Obj.ScaleWidth, xxx), RGB(R1, G1, B1)
+    Else
+    Obj.Line (xxx, 0)-(xxx, Obj.ScaleHeight), RGB(R1, G1, B1)
+    End If
+    R1 = R1 + Sr
+    G1 = G1 + Sg
+    B1 = B1 + Sb
+    Next xxx
+    Sr = (R3 - R2) / H
+    Sg = (G3 - G2) / H
+    Sb = (B3 - B2) / H
+    For xxx = H To H2
+    If Dgrad = Horiz Then
+    Obj.Line (0, xxx)-(Obj.ScaleWidth, xxx), RGB(R2, G2, B2)
+    Else
+    Obj.Line (xxx, 0)-(xxx, Obj.ScaleHeight), RGB(R2, G2, B2)
+    End If
+    R2 = R2 + Sr
+    G2 = G2 + Sg
+    B2 = B2 + Sb
+    Next xxx
+Obj.ScaleMode = TmpScale
+End Function
+÷÷÷÷÷÷
+Grad3 Function
+
+Gradient a form or picturebox with three colors
+
+Syntax:  Grad Object, Col1, Col2, Col3, [Dgrad]
+
+Object: Form or PictureBox
+Col1: First color of the gradient - long value
+Col2: Second color of the gradient - long value
+Col3: Third color of the gradient - long value
+Dgrad: Optional
+        Horiz: Horizontal gradient
+        Vertic: Vertical gradient
+
+Remarks:
+If Dgrad is omitted then the horizontal gradient will be executed
+
+Examples:
+
+Grad Form1, &HFF0080, &h0, &H8040&
+Grad Form1, &H40A0E0, &H8040FF,&hFFFFFF,  Vertic
+Grad Picture1, &H804080, &HFF&, &fA080C0, Horiz
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 6 
+CryptText
+Public Function CryptText(CrTxt$, CrCode)
+Dim CrX%
+CrCode = CrCode and &HFF& ' max 255 !
+For CrX = 1 To Len(CrTxt)
+If Mid(CrTxt, CrX, 1) <> Chr(13) Then
+Mid(CrTxt, CrX, 1) = Chr(Asc(Mid(CrTxt, CrX, 1)) Xor CrCode)
+End If
+Next CrX
+CryptText = CrTxt
+End Function
+
+÷÷÷÷÷÷
+CryptText Function
+
+Syntax: CryptText(CrTxt, CrCode)
+
+CrTxt: The text to be crypted
+CrCode: The cryption-code. This must be in the range of 1 - 255.
+
+Remarks:
+* This is an easy way to crypt a text.
+* To uncrypt, call the same function again (with the same cryption-code !!!)
+* A CrCode of 0 cannot be used, because the text will not be changed.
+
+Examples:
+
+A = CryptText("This is an example, 1)
+Label1.caption = CryptText("This is another example, 155)
+
+A full example:
+' Start a new project and add a Command-button and a Label
+' Put the CryptText-function in a module
+' Press the command button to crypt the text
+' Press the command button again to decrypt the text
+
+Private Sub Form_Load()
+Label1.Caption = "This is a test" & vbCr & "to see what happens"
+End Sub
+
+Private Sub Command1_Click()
+Label1.Caption = CryptText(Label1.Caption, 1)
+End Sub
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 6 
+BackText
+Public Function BackText(BkTxt$)
+If BkTxt = "" Then BackText = "": Exit Function
+Dim Bkx%, NewBkTxt$
+For Bkx = Len(BkTxt) To 1 Step -1
+NewBkTxt = NewBkTxt & Mid(BkTxt, Bkx, 1)
+Next Bkx
+BackText = NewBkTxt
+End Function
+
+÷÷÷÷÷÷
+BackText Function
+
+Reverses a given string
+
+Syntax: BackText(BkTxt)
+
+BkTxt: The string to reverse
+
+Example:
+
+Label1.Caption =BackText(Label1.Caption)
+
+Dim A$, B$
+A = "This is a test"
+B$ = BackText(A)
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 6 
+AnaGram
+Public Function AnaGram(AnaWord$) As String
+if AnaWord = "" then AnaGram = "": Exit Function
+Dim QQ%, An%, An1%
+ReDim An2%(Len(AnaWord))
+AnaGram = ""
+For An = 1 To Len(AnaWord)
+NewRnd:
+Randomize
+An1 = Int(Rnd * Len(AnaWord)) + 1
+    For QQ = 1 To An
+    If An2(QQ) = An1 Then GoTo NewRnd
+    Next QQ
+An2(An) = An1
+Anagram = Anagram + Mid(AnaWord, An1, 1)
+Next An
+End Function
+÷÷÷÷÷÷
+AnaGram
+
+This function returns an anagram of a given string.
+
+Syntax:  AnaGram(AnaWord)
+
+AnaWord: A string to be scrambled
+
+Example:
+
+Label1.Caption = AnaGram(Label1.Caption)
+
+Dim A$, B$
+A = "This is a test"
+B$ = AnaGram(A)
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 2 
+OpenURL
+#If Win32 Then
+Private Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (ByVal hwnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
+#Else
+Private Declare Function ShellExecute Lib "shell.dll" (ByVal hwnd As Integer, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Integer) As Integer
+#End If
+Private Const SW_SHOWNORMAL = 1
+
+Private Sub Command1_Click()
+Dim iret As Long
+    iret = ShellExecute(Me.hwnd, vbNullString, "http://www.whateversite.com", vbNullString, "c:\", SW_SHOWNORMAL)
+End Sub
+
+Private Sub Command2_Click()
+Dim iret As Long
+    iret = ShellExecute(Me.hwnd, vbNullString, "mailto:whoever@whatever.com", vbNullString, "c:\", SW_SHOWNORMAL)
+End Sub
+
+÷÷÷÷÷÷
+OpenURL Api
+
+Syntax:
+' for win32
+Private Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (ByVal hwnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
+
+Opens the default webbrowser or email-program from within VB
+
+Examples:
+
+Private Sub Command1_Click() 'Open web-browser
+Dim iret As Long
+' replace the adress by the adres you want.
+    iret = ShellExecute(Me.hwnd, vbNullString, "http://www.asitetovisit.com", vbNullString, "c:\", SW_SHOWNORMAL)
+End Sub
+
+Private Sub Command2_Click() 'Open e-mail program
+Dim iret As Long
+' replace the adress by the adress you want
+    iret = ShellExecute(Me.hwnd, vbNullString, "mailto:mailtosomeone@anything.be", vbNullString, "c:\", SW_SHOWNORMAL)
+End Sub
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 4 
+Grad45
+Public Enum GradDir
+LeftRight
+RightLeft
+End Enum
+Public Function Grad45(Obj As Object, RG1, GG1, BG1, Optional RG2, Optional GG2, Optional BG2, Optional GrDir As GradDir)
+If IsMissing(RG2) Then RG2 = 0
+If IsMissing(GG2) Then GG2 = 0
+If IsMissing(BG2) Then BG2 = 0
+If IsMissing(GrDir) Then GrDir = LeftRight
+Dim RGS, GGS, BGS, ScG%, NewL%, NewR, NewG, NewB, Gx%
+ScG = Obj.ScaleMode
+Obj.ScaleMode = 3 'pixel
+Obj.AutoRedraw = True
+Obj.DrawWidth = 2
+Obj.DrawStyle = 6
+'-----------
+NewL = Obj.ScaleWidth + Obj.ScaleHeight
+RGS = (RG2 - RG1) / NewL
+GGS = (GG2 - GG1) / NewL
+BGS = (BG2 - BG1) / NewL
+For Gx = 0 To NewL
+If GrDir = LeftRight Then
+Obj.Line (0, Gx)-(Gx, 0), RGB(Int(RG1), Int(GG1), Int(BG1))
+Else
+Obj.Line (Obj.ScaleWidth - NewL + Gx, 0)-(Obj.ScaleWidth, NewL - Gx), RGB(Int(RG1), Int(GG1), Int(BG1))
+End If
+RG1 = (RG1 + RGS)
+GG1 = (GG1 + GGS)
+BG1 = (BG1 + BGS)
+
+Next Gx
+
+Obj.ScaleMode = ScG
+End Function
+
+÷÷÷÷÷÷
+Grad45 Function
+
+Does gradient the form or picturebox with 45°
+
+Syntax: Grad45 Object, R1, G1, B1, [R2], [G2], [B2], [GradDir]
+
+Object: Form or Picturebox (must support the line-method
+R1, G1, B1: The RGB colors of the starting value of the gradient
+R2, G2, B2: (Optional) The RGB colors of the end value of the gradient.  If you omit R2, G2, B2,
+                    they are set to zero.
+GradDir: (Optional) The direction of the gradient. If you omit GradDir, it will be set to zero (LeftRight)
+              LeftRight: GradDir from left to right
+              RightLeft: GradDir from right to left
+
+Remarks:
+* This function sets the object to scalemode = 3, but returns to the original
+   value after the gradient is done.
+* This function sets AutoRedraw = True
+* This function sets the DrawWidth-Property to 2
+* This function sets the DrawStyle-Property to 6 (Inside solid)
+
+Examples:
+
+Grad45 Form1, 255, 0, 0
+Grad45 Form1, 192, 64, 32, 128, 255, 192, LeftRight
+Grad45 Picture1, 255,0,0, , , , RightLeft
+
+Private Sub Command1_Click()
+Grad45 Form1, 0, 0, 0, 0, 0, 255, RightLeft
+End Sub
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 4 
+CircleGradient
+Public Function CircleGradient(Obj As Object, StX As Single, StY As Single, R1 As Single, G1 As Single, B1 As Single, R2 As Single, G2 As Single, B2 As Single)
+Screen.MousePointer = 11
+Dim CstepR As Single, CstepG As Single, CstepB As Single, CR As Single, Cx%
+Obj.AutoRedraw = True
+Obj.ScaleMode = 3
+Obj.DrawWidth = 2
+Obj.DrawStyle = 6 'inside solid
+
+CR = Sqr((Obj.ScaleWidth) ^ 2 + (Obj.ScaleHeight) ^ 2)
+CstepR = (R2 - R1) / CR
+CstepG = (G2 - G1) / CR
+CstepB = (B2 - B1) / CR
+For Cx = 0 To CR
+Obj.Circle (StX, StY), Cx, RGB(R1, G1, B1)
+R1 = R1 + CstepR
+G1 = G1 + CstepG
+B1 = B1 + CstepB
+Next Cx
+Screen.MousePointer = 1
+End Function
+
+÷÷÷÷÷÷
+CircleGradient Function
+
+Draws a gradient on a form or picturebox in a circle
+
+Syntax: CircleGradient(Object, StX, StY, R1, G1, B1, R2, G2, B2)
+
+Object: Form or pictureBox (must support the line-method)
+StX: X-coordinate of the centerpoint
+StY: Y-coordinate of the centerpoint
+
+R1 G1 B1: The starting RGB-values of the gradient
+R2 G2 B2: The ending RGB-values of the Gradient
+
+Remarks:
+This function sets folowing properties of the object:
+ * AutoRedraw = True
+ * ScaleMode = 3 'pixels
+ * DrawWidth = 2
+ * DrawStyle = 6 'Inside solid
+
+Examples:
+
+Private Sub Command1_Click()
+Form1.ScaleMode = 3
+CircleGradient Form1, Form1.ScaleWidth, Form1.ScaleHeight, 0, 0, 0, 255, 255, 0
+CircleGradient Picture1, 0, 0, 0, 0, 255, 0, 255, 255
+End Sub
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 4 
+SinusText
+Public Function SinusText(Obj As Object, Txt As String, Xcor%, Ycor%, Ampl%)
+Dim xx%, ttt%, S(359) As Integer
+Obj.ScaleMode = 3
+For xx% = 0 To 359 Step (360 / Len(Txt))
+S(tt%) = Int((Sin(xx% / 180 * 3.14159)) * Ampl%) + Ycor%
+tt% = tt% + 1
+Next xx%
+Obj.CurrentX = Xcor%
+For xx% = 0 To Len(Txt)
+Obj.CurrentY = S(xx%)
+Obj.Print Mid(Txt, xx% + 1, 1);
+Next xx%
+End Function
+
+÷÷÷÷÷÷
+SinusText Function
+
+Prints characters on the screen in a sinus
+
+Syntax: SinusText(Object, Txt, Xcor, Ycor, Ampl)
+
+Object: Form or PictureBox (must support the line-method)
+Txt: A string to print
+Xcor: The starting X-value of the printing (= CurrentX)
+Ycor: The starting Y-value of the printing (= CurrentY)
+Ampl: The amplitude (height) of the sinus
+
+Remarks:
+* This function sets the Form or PictureBox in ScaleMode = 3 (pixels)
+* If the Amplitude > Ycor then the top of the sinus will no be visible
+
+Examples:
+
+SinusText Form1, "This is a test", 10, 50,45
+
+' A complete example
+Private Sub Command1_Click()
+Dim Message as String
+Message = "This is a string to be printed on the form"
+SinusText Form1, Message, 10, 100, 45)
+End Sub
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 7 
+Bubble
+Private Sub Bubble(NewArray())
+Screen.MousePointer = 11
+Dim xx%, yy%, A$, B$, C$
+For xx = UBound(NewArray) To LBound(NewArray) Step -1
+    For yy = LBound(NewArray) + 1 To xx
+    If NewArray(yy - 1) > NewArray(yy) Then
+        A = NewArray(yy - 1)
+        NewArray(yy - 1) = NewArray(yy)
+        NewArray(yy) = A
+    End If
+    Next yy
+Next xx
+Screen.MousePointer = 1
+End Sub
+
+÷÷÷÷÷÷
+Bubble Sub
+
+Sorts a stringarray
+
+Syntax: Bubble Array()
+
+Array: A stringarray of names, adresses, ...
+
+
+Remarks:
+ This is not a fast way to sort an array, but it works good.
+ Arrays with more than 1000 items will need time to sort.
+
+
+Example 1:
+
+Dim ArrayList$(499)
+
+Private Sub Form_Load()
+' Load array
+' ........
+' ........
+' ........
+End Sub
+
+Private Sub Command1_Click()
+Bubble ArrayList()
+End Sub
+
+
+
+Example 2:
+
+Dim MyCollection$(10000)
+
+Private Sub Form_Load()
+' Load array
+' ........
+' ........
+' ........
+End Sub
+
+Private Sub Command1_Click()
+Bubble MyCollection()
+End Sub
+
+
+÷÷÷÷÷÷
+Code by Stephan Swertvaegher
+÷÷÷÷÷÷
+ 2 
+AlwaysOnTop
+Declare Function SetWindowPos Lib "User32" (ByVal h%, ByVal hb%, ByVal x%, ByVal Y%, ByVal cx%, ByVal cy%, ByVal F%) As Integer
+
+Sub AlwaysOnTop(frmID As Form, OnTop As Integer)
+' Pass any non-zero value to Place on top
+' Pass zero to remove top-mostness
+
+    Const SWP_NOMOVE = 2
+    Const SWP_NOSIZE = 1
+    Const FLAGS = SWP_NOMOVE Or SWP_NOSIZE
+    Const HWND_TOPMOST = -1
+    Const HWND_NOTOPMOST = -2
+
+    If OnTop Then
+        OnTop = SetWindowPos(frmID.hWnd, HWND_TOPMOST, 0, 0, 0, 0, FLAGS)
+    Else
+        OnTop = SetWindowPos(frmID.hWnd, HWND_NOTOPMOST, 0, 0, 0, 0, FLAGS)
+    End If
+End Sub
+
+
+÷÷÷÷÷÷
+AlwaysOnTop
+
+Puts a form always on top
+
+Syntax: AlwaysOnTop(Object, Value)
+Object: Form
+Value: integer
+   1 = always on top
+   0 = not on top
+
+Examples:
+
+Private Sub Command1_Click() 'Puts form on top
+AlwaysOnTop Form1, 1
+End Sub
+
+Private Sub Command2_Click() 'Status: normal (not always on top)
+AlwaysOnTop Form1, 0
+End Sub
+
+
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 2 
+AnimatedCursor
+'In a module
+
+Declare Function LoadCursorFromFile Lib "User32" Alias "LoadCursorFromFileA" (ByVal lpFileName As String) As Long        'Changes class information for a window
+Declare Function SetClassLong Lib "User32" Alias "SetClassLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+
+
+'In a form
+' Inputs:path of the animated cursor.
+
+Private Const GCL_HCURSOR = (-12)
+Private hOldCursor As Long
+
+Private Sub Form_Load()
+    Dim hNewCursor As Long        'Get handle to new animated mouse pointer
+    'Replace window's mouse pointer with new animated mouse pointer
+    hNewCursor = LoadCursorFromFile("C:\windows\system\pub3brsh.ani")  'File that holds an animated cursor     
+    hOldCursor = SetClassLong(Me.hwnd, GCL_HCURSOR, hNewCursor)
+    End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+    ' IMPORTANT!!!
+    ' Restore original mouse pointer to prevent animated mouse pointer from being retained
+    hOldCursor = SetClassLong(Me.hwnd, GCL_HCURSOR, hOldCursor)
+End Sub
+
+ 
+
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+Code from Planet Source
+÷÷÷÷÷÷
+ 7 
+MakeSinus
+Private Sub MakeSinus(SinArray(), SinWave%, SinAmp%, Optional SinAdd%)
+If SinWave > 360 Then SinWave = 360 'max 360
+If IsMissing(SinAdd) Then SinAdd = 0
+ReDim SinArray(SinWave - 1)
+Dim sinXX, sinT%
+For sinXX = 0 To 359 Step (360 / SinWave)
+SinArray(sinT) = Int((Sin(sinXX / 180 * 3.14159)) * SinAmp) + SinAdd
+sinT = sinT + 1
+Next sinXX
+End Sub
+÷÷÷÷÷÷
+MakeSinus
+
+Creates an array with a sinus-loop
+
+Syntax MakeSinus(SinArray(), SinWave, SinAmp, Optional SinAdd)
+
+SinArray: The array with the created values
+SinWave: The number of items in the array. The array is Redimmed using this value
+SinAmp: The amplitude of the sinus
+SinAdd: Optional. Adds a fix number to the values. If omitted, this value will be 0.
+
+Remarks:
+* SinWave cannot be bigger than 360 (a circle has 360°)
+
+Examples:
+
+MakeSinus Ar(),100, 20
+MakeSinus Ar(), 180, 50, 100
+
+A Full Example:
+
+'Add a Command-button (Command1) and a listbox (List1) to a new project.
+'Copy the code of the MakeSinus and paste it.
+'Copy the following code and paste it
+
+'Declarations
+Dim Ar()
+
+Private Sub Command1_Click()
+MakeSinus Ar(), 180, 50, 100
+Dim xx
+For xx = 0 To 180 - 1
+List1.AddItem Ar(xx)
+Next xx
+End Sub
+
+÷÷÷÷÷÷
+Coded by Stephan Swertvaegher
+÷÷÷÷÷÷
+ 1 
+OpenFile
+Sub OpenFile(Filename)
+    On Error Resume Next
+dim ff
+ff = FreeFile
+    Open Filename For Input As #ff
+    If Err Then
+        MsgBox "Can't open file: " + Filename
+        Exit Sub
+    End If
+   Text1.Text = Input(LOF(ff), ff)
+    Close #ff
+End Sub
+
+÷÷÷÷÷÷
+OpenFile
+
+Opens a file to load text
+
+Example:
+
+OpenFile "C:\MyDirectory\Text.txt"
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 1 
+SaveFile
+Private Sub SaveFile(Filename, Contents)
+dim ff
+ff = FreeFile
+On Error Resume Next
+    Open Filename For Output As #ff
+    Print #ff, Contents
+    Close #ff
+End Sub
+
+÷÷÷÷÷÷
+SaveFile
+
+Saves a file to the harddisc, diskette, ...
+
+Example:
+
+SaveFile "C:\MyDirectory\Text.txt", Text1.Text
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 4 
+FormExit
+Private Function FormExit(TheForm As Form, Optional FEStyle, Optional FESpeed)
+If IsMissing(FEStyle) Then FEStyle = 0
+If IsMissing(FESpeed) Then FESpeed = 30
+
+Select Case FEStyle
+Case 0  'down
+    Do
+        DoEvents
+        TheForm.Top = Trim(Str(Int(TheForm.Top) + FESpeed))
+    Loop Until TheForm.Top > Screen.Height
+
+Case 1  'up
+    Do
+        DoEvents
+        TheForm.Top = Trim(Str(Int(TheForm.Top) - FESpeed))
+    Loop Until TheForm.Top < -TheForm.Width
+
+Case 2  'left
+    Do
+        DoEvents
+        TheForm.Left = Trim(Str(Int(TheForm.Left) - FESpeed))
+    Loop Until TheForm.Left < -TheForm.Width
+
+Case 3  'right
+    Do
+        DoEvents
+        TheForm.Left = Trim(Str(Int(TheForm.Left) + FESpeed))
+    Loop Until TheForm.Left > Screen.Width
+End Select
+End Function
+÷÷÷÷÷÷
+FormExit function
+
+Exits the form up, down, left, right according to FeStyle, with FESpeed.
+
+Syntax: FormExit(TheForm, [FEStyle], [FESpeed])
+
+TheForm: the form
+FEStyle: Optional. The way to exit the form. If you omit FeStyle, it will be 0 (exit down)
+ 0 (default) Exits the form down
+ 1 Exits the form up
+ 2 Exits the form left
+ 3 Exits the form right
+FESpeed: Optional. The speed to exit the form. If you omit FeSpeed, it will be set to 30.
+
+Remarks:
+* FESpeed may not be 0, or the form will not move.
+
+Examples:
+
+FormExit Form1
+FormExit Form1, 2
+FormExit Form1, 1, 50
+FormExit Form1, , 100
+
+
+÷÷÷÷÷÷
+Idea found on the web.
+Totally redone by Stephan Swertvaegher
+
+÷÷÷÷÷÷
+ 6 
+EchoText
+Private Function EchoText(text As String, Optional Reverse As Boolean)
+On Error GoTo error
+If IsMissing(Reverse) Then Reverse = False
+Dim i As Long
+Dim endstr As String
+For i = 1 To Len(text$)
+  If Reverse = True Then
+  endstr$ = Mid$(text$, i, Len(text$) - (i - 1)) & " " & endstr$
+  Else
+  endstr$ = endstr$ & Mid$(text$, i, Len(text$) - (i - 1)) & " "
+  End If
+Next i
+endstr$ = Mid$(endstr$, 1, Len(endstr$) - 1)
+EchoText = endstr$
+Exit Function
+error:  MsgBox Err.Description, vbExclamation, "Error"
+End Function
+
+
+÷÷÷÷÷÷
+EchoText
+
+Does a manipulation of the text, like this: 
+Reverse = False
+ * Text ext xt t
+ * PlanetSource lanetSource anetSource netSource etSource tSource Source ource urce rce ce e
+Reverse = True
+ * t xt ext Text
+ * e ce rce urce ource Source tSource etSource netSource anetSource lanetSource PlanetSource
+
+
+Syntax:  EchoText(text, [Reversse])
+
+text: The text to manipulate
+Reverse: Optional A Boolean value. If you omit Reverse, it is False (Normal echo)
+   False: Does normal echo 
+   True: Does echo backwards
+
+Examples:
+ 
+Private Sub Command1_Click()
+Label1.Caption = "Testing"
+Label1.Caption = EchoText(Label1.Caption) 'normal echo
+End Sub
+
+Private Sub Command2_Click()
+Label1.Caption = "Testing"
+Label1.Caption = EchoText(Label1.Caption, False) 'normal echo
+End Sub
+
+Private Sub Command3_Click()
+Label1.Caption = "Testing"
+Label1.Caption = EchoText(Label1.Caption, True) 'reverse echo
+End Sub
+÷÷÷÷÷÷
+Code found on the web
+Adapted by Stephan Swertvaegher
+÷÷÷÷÷÷
+ 6 
+AddSpace
+Private Function AddSpace(SPText$) As String ' Can also be Public
+Dim i%, SPNewText$
+For i = 1 To Len(SPText)
+SPNewText = SPNewText & Mid(SPText, i, 1) & " "
+Next i
+SPNewText = Left(SPNewText, Len(SPNewText) - 1)
+AddSpace = SPNewText
+End Function
+
+÷÷÷÷÷÷
+AddSpace function
+
+Adds spaces between the characters, like this:
+ Test becomes T e s t
+
+Syntax: AddSpace(SPText)
+
+SpText: the text to put spaces in between
+
+Examples:
+
+Label1.Caption = AddSpace("Test")
+Label2.Caption = AddSpace(Label2.Caption)
+
+÷÷÷÷÷÷
+Code by Stephan Swertvaegher
+÷÷÷÷÷÷
+ 6 
+AltCaps
+Private Function AltCaps(text As String)
+On Error GoTo error
+Dim i As Integer
+Dim s As String
+s = ""
+For i = 1 To Len(text$)
+  KeyVal = Asc(Mid$(text$, i, 1))
+  If (KeyVal >= 96 And KeyVal < 96 + 26) Or (KeyVal >= 64 And KeyVal < 64 + 26) Then
+    If (i And 1) = 1 Then
+      If KeyVal < 96 Then
+        s = s + Chr$(96 + KeyVal - 64)
+      Else
+        s = s + Chr$(KeyVal)
+      End If
+    Else
+      If KeyVal >= 96 Then
+        s = s + Chr$(64 + KeyVal - 96)
+      Else
+        s = s + Chr$(KeyVal)
+      End If
+    End If
+  Else
+    s = s + Chr$(KeyVal)
+  End If
+Next i
+text$ = s
+AltCaps = text$
+Exit Function
+error:  MsgBox Err.Description, vbExclamation, "Error"
+End Function
+÷÷÷÷÷÷
+AltCaps function
+
+Manipulates the text like this:
+'this is a test' becomes 'ThIs iS A TeSt'
+
+Syntax:   AltCaps(text)
+
+Text: The text to manipulate
+
+Examples:
+
+Label1.Caption = AltCaps("this is a test")
+Label2.Caption = AltCaps(Label2.Caption)
+
+÷÷÷÷÷÷
+Code found on the web
+÷÷÷÷÷÷
+ 2 
+PlayMidi
+Public Declare Function mciSendString Lib "winmm.dll" Alias "mciSendStringA" (ByVal lpstrCommand As String, ByVal lpstrReturnString As String, ByVal uReturnLength As Long, ByVal hwndCallback As Long) As Long
+
+Public Function PlayMIDI(MIDIFile$)
+    Dim SafeFile$
+    SafeFile = Dir(MIDIFile)
+    If SafeFile <> "" Then
+        Call mciSendString("play " & MIDIFile, 0&, 0, 0)
+    End If
+End Function
+
+÷÷÷÷÷÷
+PlayMidi
+
+Plays a Midifile
+
+Syntax: PlayMidi(MidiFile)
+
+MidiFile: The path of the midifile
+
+Remarks:
+The PlayMidi should always go together with the StopMidi function
+
+Examples:
+
+PlayMidi "C:\Midi\Song1.mid" 'Just a path where you can find a Midifile
+
+÷÷÷÷÷÷
+Code found on the web
+÷÷÷÷÷÷
+ 2 
+StopMidi
+Public Declare Function mciSendString Lib "winmm.dll" Alias "mciSendStringA" (ByVal lpstrCommand As String, ByVal lpstrReturnString As String, ByVal uReturnLength As Long, ByVal hwndCallback As Long) As Long
+
+Public Function StopMIDI(MIDIFile$)
+    Dim SafeFile$
+    SafeFile = Dir(MIDIFile)
+    If SafeFile <> "" Then
+        Call mciSendString("stop " & MIDIFile, 0&, 0, 0)
+    End If
+End Function
+
+
+÷÷÷÷÷÷
+StopMidi
+
+Stops the playing Midifile
+
+Syntax: StopMidi(MidiFile)
+
+MidiFile: The path of the midifile
+
+
+Examples:
+
+StopMidi "C:\Midi\Song1.mid" 'Just a path where you can find a Midifile
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 2 
+ShowTaskBar
+Public Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
+Public Declare Function ShowWindow Lib "user32" (ByVal hwnd As Long, ByVal nCmdShow As Long) As Long
+
+Public Function ShowTaskBar(TBShow%)
+Dim Handle As Long
+If TBShow > 1 Then TBShow = 1
+Handle& = FindWindow("Shell_TrayWnd", vbNullString)
+ShowWindow Handle&, TBShow
+End Function
+
+÷÷÷÷÷÷
+ShowTaskBar
+
+Shows/hides the windows taskbar
+
+ShowTaskBar(TBShow)
+
+TBShow: A value that shows or hides the taskbar
+   0: hides the taskbar
+   1: shows the taskbar
+
+
+Examples:
+
+Private Sub Command1_Click() 'hides the taskbar
+ShowTaskBar 0
+End Sub
+
+Private Sub Command1_Click() 'shows the taskbar
+ShowTaskBar 1
+End Sub
+
+÷÷÷÷÷÷
+Code found on the web
+÷÷÷÷÷÷
+ 2 
+AlignButtonCaption
+Public Const GWL_STYLE& = (-16)
+Public Declare Function GetWindowLong& Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long)
+Public Declare Function SetWindowLong& Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long)
+
+Public Enum BUTTON_STYLE
+    BS_CENTER = &H300&
+    BS_LEFT = &H100&
+    BS_RIGHT = &H200&
+    BS_TOP = &H400&
+End Enum
+Public a As Variant
+
+Public Sub AlignCommandButtonText(Button As Object, Style As BUTTON_STYLE)
+
+Dim lHwnd As Long
+
+On Error Resume Next
+lHwnd = Button.hwnd
+Dim lWnd As Long
+Dim lRet As Long
+If lHwnd = 0 Then Exit Sub
+
+lWnd = GetWindowLong(lHwnd, GWL_STYLE)
+lRet = SetWindowLong(Form1.Command1.hwnd, GWL_STYLE, Style Or lWnd)
+
+Button.Refresh
+End Sub
+
+÷÷÷÷÷÷
+AlignButtonCaption
+
+Aligns the caption of a button:
+    CENTER
+    LEFT
+    RIGHT
+    TOP
+
+Syntax:  AlignCommandButtonText(Button, Style)
+
+Button: The button to change its caption
+Style: The style of the caption, as described in settings:
+    BS_CENTER
+    BS_LEFT
+    BS_RIGHT
+    BS_TOP
+
+Examples:
+
+Private Sub Command1_Click()
+Call AlignCommandButtonText(Command1, BS_TOP)
+End Sub
+
+Private Sub Command2_Click()
+Call AlignCommandButtonText(Command1, BS_RIGHT)
+End Sub
+
+
+÷÷÷÷÷÷
+Code found on the web
+÷÷÷÷÷÷
+ 6 
+TwistText
+Function TwistText(text As String)
+'This will "twist" text, it is kind of like scramble, example:  oClo
+Dim CurPos As Long
+Dim endstr As String
+CurPos = 1
+Start:
+endstr$ = endstr$ & Mid$(text$, CurPos + 1, 1) & Mid$(text$, CurPos, 1)
+CurPos = CurPos + 2
+If Len(text$) > CurPos Then
+GoTo Start
+ElseIf Len(text$) = CurPos Then
+endstr$ = endstr$ & Mid$(text$, Len(text$), 1)
+End If
+TwistText = endstr$
+End Function
+
+÷÷÷÷÷÷
+TwistText function
+
+Scrambles the text, but in a special way.
+
+Syntax: TwistText(text)
+
+text: the string to be twisted.
+
+Example:
+
+Private Sub Command1_Click()
+Label1.Caption = TwistText(Label1.Caption)
+End Sub
+
+÷÷÷÷÷÷
+Code found on the web
+÷÷÷÷÷÷
+ 2 
+CDOpenClose
+Public Declare Function mciSendString Lib "winmm.dll" Alias "mciSendStringA" (ByVal lpstrCommand As String, ByVal lpstrReturnString As String, ByVal uReturnLength As Long, ByVal hwndCallback As Long) As Long
+
+Public Function CDOpenClose(OpenClose As Boolean)
+If OpenClose = True Then 'Open the CD drive
+On Error GoTo error
+retvalue = mciSendString("set CDAudio door open", returnstring, 127, 0)
+Exit Function
+End If
+On Error GoTo error
+retvalue = mciSendString("set CDAudio door closed", returnstring, 127, 0)
+Exit Function
+error:  MsgBox Err.Description, vbExclamation, "Error"
+End Function
+
+÷÷÷÷÷÷
+CDOpenClose
+
+This opens and/or closes the CD-tray
+
+Syntax:
+ CDOpenClose True 'Opens the CD
+ CDOpenClose False 'Closes the CD
+
+Example:
+
+Private Sub Command1_Click() 'Opens the CD
+CDOpenClose True
+End Sub
+
+÷÷÷÷÷÷
+Code found on the web
+Routine extended by Stephan Swertvaegher 
+
+÷÷÷÷÷÷
+ 2 
+ShowMouse
+Declare Function ShowCursor Lib "user32" (ByVal bShow As Long) As Long
+
+Public Sub ShowMouse(Optional Show As Boolean = True)
+Dim sCursor As Long, sShow As Integer
+sShow = -Show * 2 - 1
+Do
+sCursor = ShowCursor(Show)
+Loop Until Abs(sCursor) * sShow = sCursor And sCursor <> 0
+End Sub
+
+÷÷÷÷÷÷
+ShowMouse
+
+Shows/hides the mousepointer
+
+Syntax: ShowMouse(Show)
+
+Show: a boolean value, if true shows the mouse, if false hides the mouse.
+
+Example:
+
+Private Sub Command1_Click()
+ShowMouse True
+End Sub
+
+Private Sub Command2_Click()
+ShowMouse False
+End Sub
+
+÷÷÷÷÷÷
+Code from MicroSoft
+÷÷÷÷÷÷
+ 2 
+AboutBox
+Public Declare Function ShellAbout Lib "shell32.dll" Alias "ShellAboutA" (ByVal hWnd As Long, ByVal szApp As String, ByVal szOtherStuff As String, ByVal hIcon As Long) As Long
+
+Sub AboutBox(MyIcon As Form, Appname As String, Line1 As String, Line2 As String)
+Dim NewText$
+NewText = Line1 & vbCrLf & Line2
+hIcon = MyIcon.Icon
+ShellAbout MyIcon.hWnd, Appname, NewText, hIcon
+End Sub
+
+
+
+÷÷÷÷÷÷
+AboutBox
+
+Shows an AboutBox
+
+Syntax: AboutBox Object, AppName, Line1, Line2
+
+Object: The form from where to extract the icon
+AppName: Usually App.EXEName
+Line1: Comment
+Line2: Comment
+
+Example:
+
+Private Sub Command1_Click()
+AboutBox Form1, App.EXEName, "Test line 1", "Test line 2"
+End Sub
+
+÷÷÷÷÷÷
+Found on the web
+÷÷÷÷÷÷
+ 2 
+BrowseFolder
+'Put this in a module
+
+Type Browse
+    hWndOwner      As Long
+    pIDLRoot       As Long
+    pszDisplayName As Long
+    lpszTitle      As Long
+    ulFlags        As Long
+    lpfnCallback   As Long
+    lParam         As Long
+    iImage         As Long
+End Type
+
+Public Const BIF_RETURNONLYFSDIRS = 1
+Public Const BIF_DONTGOBELOWDOMAIN = 2
+Public Const MAX_PATH = 260
+
+Declare Function lstrcat Lib "Kernel32" Alias "lstrcatA" (ByVal lpString1 As String, ByVal lpString2 As String) As Long
+Declare Function SHBrowseForFolder Lib "shell32" (lpbi As Browse) As Long
+Declare Function SHGetPathFromIDList Lib "shell32" (ByVal pidList As Long, ByVal lpBuffer As String) As Long
+
+Public Sub BrowseFolder()
+Dim IDList As Long, Path$, Title$
+Dim BrInfo As Browse
+    Title = "Select a folder."
+    With BrInfo
+        .hWndOwner = Me.hWnd
+        .lpszTitle = lstrcat(Title, "")
+        .ulFlags = BIF_RETURNONLYFSDIRS + BIF_DONTGOBELOWDOMAIN
+    End With
+    IDList = SHBrowseForFolder(BrInfo)
+    If (IDList) Then
+        Path = Space(MAX_PATH)
+        SHGetPathFromIDList IDList, Path
+        Path = Left(Path, InStr(Path, vbNullChar) - 1)
+        MsgBox Path, vbInformation + vbOKOnly, "BrowseForFolder"
+    End If
+End Sub
+
+
+÷÷÷÷÷÷
+BrowseFolder
+
+Shows a form where you can browse for folders.
+You can have a returnpath
+
+Example:
+
+Private Sub Command1_Click()
+BrowseFolder
+End Sub
+
+÷÷÷÷÷÷
+Found on the web
+÷÷÷÷÷÷
+ 2 
+SetWallPaper
+Private Declare Function SystemParametersInfo Lib "user32" Alias "SystemParametersInfoA" (ByVal uAction As Long, ByVal uParam As Long, ByVal lpvParam As String, ByVal fuWinIni As Long) As Long
+Const SPIF_UPDATEINIFILE = &H1
+Const SPI_SETDESKWALLPAPER = 20
+Const SPIF_SENDWININICHANGE = &H2
+Dim Filename$
+
+Private Function SetWallPaper(WPFile$)
+SystemParametersInfo SPI_SETDESKWALLPAPER, 0&, WPFile, SPIF_UPDATEINIFILE Or SPIF_SENDWININICHANGE
+End Function
+÷÷÷÷÷÷
+SetWallPaper
+
+Changes the wallpaper on your desktop
+
+Syntax: SetWallPaper Path
+
+Path: A string with a valid path and a picture
+
+Remarks: The picture must be a bitmap (.bmp) file
+
+Example:
+
+Private Sub Command1_Click()
+Dim FileName$
+Filename = "C:\Pictures\Example.bmp"
+SetWallPaper Filename
+End Sub
+
+÷÷÷÷÷÷
+Got this from a friend.
+÷÷÷÷÷÷
+ 2 
+SizeCombo
+Private Declare Function MoveWindow Lib "user32" (ByVal hwnd As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal bRepaint As Long) As Long
+
+Public Sub SizeCombo(frm As Form, cbo As ComboBox, cboH%)
+    Dim cbo_left As Integer
+    Dim cbo_top As Integer
+    Dim cbo_width As Integer
+    Dim cbo_height As Integer
+    Dim old_scale_mode As Integer
+' Change the Scale Mode on the form to Pixels.
+    old_scale_mode = frm.ScaleMode
+    frm.ScaleMode = vbPixels
+' Save the ComboBox's Left, Top, and Width values.
+    cbo_left = cbo.Left
+    cbo_top = cbo.Top
+    cbo_width = cbo.Width
+' Set the new height of the combo box.
+    cbo_height = cboH
+    frm.ScaleMode = old_scale_mode
+' Resize the combo box window.
+    MoveWindow cbo.hwnd, cbo_left, cbo_top, cbo_width, cbo_height, 1
+End Sub
+
+
+÷÷÷÷÷÷
+SizeCombo
+
+Resize a ComboBox's dropdown display area.
+
+Syntax: SizeCombo(Form, ComboBox, Height)
+
+Form: The form where the combobox is situated.
+ComboBox: The actual ComboBox
+Height: The height of the dropdown list in pixels
+
+Remark:
+If you want to acces a combobox in another form, you have too specify that too !
+For example:
+SizeCombo AnotherForm, AnotherForm.Combo1, 400
+
+
+Example:
+
+Private Sub Form_Load()
+Dim i As Integer
+    ' Make a bunch of ComboBox entries.
+    For i = 1 To 50
+        Combo1.AddItem Format$(i)
+    Next i
+    Combo1.ListIndex = 0
+
+    ' Resie the ComboBox's dropdown area.
+    SizeCombo Me, Combo1, 300
+End Sub
+
+÷÷÷÷÷÷
+Found on the web
+
+The size of the dropdown-list of the combobox must be done in an experimental way.
+Try different values, and start the project to see the result. With a value of 300, the combo
+can display about 21 items (with a normal fontsize).
+÷÷÷÷÷÷
+ 2 
+ClipCursor
+Private Type RECT
+    left As Long
+    top As Long
+    right As Long
+    bottom As Long
+End Type
+Private Type POINT
+    x As Long
+    y As Long
+End Type
+Private Declare Sub ClipCursor Lib "user32" (lpRect As Any)
+Private Declare Sub GetClientRect Lib "user32" (ByVal hWnd As Long, lpRect As RECT)
+Private Declare Sub ClientToScreen Lib "user32" (ByVal hWnd As Long, lpPoint As POINT)
+Private Declare Sub OffsetRect Lib "user32" (lpRect As RECT, ByVal x As Long, ByVal y As Long)
+
+Dim client As RECT
+
+Private Sub Command1_Click()
+ClipCursor client
+End Sub
+
+Private Sub Form_Load()
+
+    Command1.Caption = "Limit Cursor Movement"
+    Command2.Caption = "Release Limit"
+    Dim upperleft As POINT
+    GetClientRect Me.hWnd, client
+    upperleft.x = client.left
+    upperleft.y = client.top
+    ClientToScreen Me.hWnd, upperleft
+    OffsetRect client, upperleft.x, upperleft.y
+End Sub
+Private Sub Command2_Click()
+ClipCursor ByVal 0&
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+    'Releases the cursor limits
+    ClipCursor ByVal 0&
+End Sub
+
+
+    
+
+÷÷÷÷÷÷
+ClipCursor
+
+Makes the cursor stay in the form. You cannot go outside the form with the mouse.
+IMPORTANT !
+Make sure to restore the original value when you exit the program:
+
+          Private Sub Form_Unload(Cancel As Integer)
+          ClipCursor ByVal 0&
+          End Sub
+
+
+÷÷÷÷÷÷
+Code provided by:
+    KPD-Team 1999
+    URL: http://kpdweb.cjb.net/
+    E-Mail: KPD_Team@Hotmail.com
+÷÷÷÷÷÷
+ 8 
+ShowTT
+Private Function ShowTT(Obj As Object, TTYpos As Single)
+If TypeOf Obj Is ListBox Then
+    Dim YPos As Integer, iOldFontSize As Integer
+    iOldFontSize = Me.Font.Size
+    Me.Font.Size = Obj.Font.Size
+    YPos = TTYpos \ Me.TextHeight("Xyz") + Obj.TopIndex
+    Me.Font.Size = iOldFontSize
+        If YPos < Obj.ListCount Then
+        Obj.ToolTipText = Obj.List(YPos)
+        Else
+        Obj.ToolTipText = ""
+        End If
+End If
+End Function
+÷÷÷÷÷÷
+ShowTT
+
+This shows the contents of a listbox in a tooltiptext. The item doesn't even
+have to be selected.
+This comes in handy when the length of the item exceeds the width of the listbox.
+
+Syntax: ShowTT, Control, Ypos
+
+Control: The listbox
+Ypos: The Y-position of the mouse in the listbox.
+
+Remark:
+* This is a private function ! It must be placed in the declarations-section
+   of the form where the listbox is present
+* This function works ONLY with a listbox
+
+Example:
+ 
+Private Sub List1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+ShowTT List1, Y
+End Sub
+
+÷÷÷÷÷÷
+Code found on the web
+
+Note from Stephan Swertvaegher:
+
+To my opinion, this code works good, but gives an ugly flickering
+to the labels on the form. Don't know why, but it has something
+to do with the value of Me.TextHeight("Xyz").
+It is better to declare that in a variabele in the Form_Load event, like this:
+
+Dim TH% ' textheight as integer
+
+Private Sub Form_Load()
+Dim OldStyle%
+OldStyle =Me.ScaleMode
+Me.Scalemode = 1 ' set to twips
+TH = Me.TextHeight("Xyz")
+Me.ScaleMode = OldStyle ' Restore original scalemode
+...
+... ' rest of the code
+...
+End Sub
+
+In the ShowTT-function, replace Me.TextHeight("Xyz") by TH.
+
+÷÷÷÷÷÷
+ 2 
+SwapButtons
+Private Declare Function SwapMouseButton Lib "user32" (ByVal bSwap As Long) As Long
+
+Private Sub SwapButtons()
+Dim Cur&, Butt&
+    Cur = SwapMouseButton(Butt)
+    If Cur = 0 Then
+        SwapMouseButton (1)
+    Else: SwapMouseButton (0)
+    End If
+End Sub
+÷÷÷÷÷÷
+SwapButtons
+
+Swaps the buttons of the mouse: left becomes right and right becomes left.
+Make sure to call that function again to set things right BEFORE you exit the project.
+
+Example:
+
+Private Sub Command1_Click()
+SwapButtons
+End Sub
+
+÷÷÷÷÷÷
+Code found in an API-guide.
+÷÷÷÷÷÷
+ 2 
+SystemColors
+Const COLOR_SCROLLBAR = 0
+Const COLOR_BACKGROUND = 1
+Const COLOR_ACTIVECAPTION = 2
+Const COLOR_INACTIVECAPTION = 3
+Const COLOR_MENU = 4
+Const COLOR_WINDOW = 5
+Const COLOR_WINDOWFRAME = 6
+Const COLOR_MENUTEXT = 7
+Const COLOR_WINDOWTEXT = 8
+Const COLOR_CAPTIONTEXT = 9
+Const COLOR_ACTIVEBORDER = 10
+Const COLOR_INACTIVEBORDER = 11
+Const COLOR_APPWORKSPACE = 12
+Const COLOR_HIGHLIGHT = 13
+Const COLOR_HIGHLIGHTTEXT = 14
+Const COLOR_BTNFACE = 15 'buttonBackGr
+Const COLOR_BTNSHADOW = 16
+Const COLOR_GRAYTEXT = 17
+Const COLOR_BTNTEXT = 18 'buttontext
+
+Private Declare Function GetSysColor Lib "user32" (ByVal nIndex As Long) As Long
+Private Declare Function SetSysColors Lib "user32" (ByVal nChanges As Long, lpSysColor As Long, lpColorValues As Long) As Long
+
+Dim SavedColors(18) As Long, IndexArray(18) As Long, NewColors(18) As Long
+
+Private Sub Form_Load()
+    ' Save current system colors:
+    For i = 0 To 18
+        SavedColors(i) = GetSysColor(i)
+    Next i
+
+    ' Change all display elements:
+    For i = 18 To 18
+        Randomize Timer
+        NewColors(i) = RGB(Rnd * 255, Rnd * 255, Rnd * 255)
+        IndexArray(i) = i
+    Next i
+    SetSysColors 19, IndexArray(0), NewColors(0)
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+    ' Restore system colors:
+    SetSysColors 19, IndexArray(0), SavedColors(0)
+End Sub
+
+
+
+÷÷÷÷÷÷
+SystemColors
+
+Get/Set SystemColors
+
+1) Store the original colors in an array
+2) Make a new array with different colors
+3) When you exit the program: restore the original colors
+
+Ofcourse, it is possible to change only 1 color, say the color of the Forms Captiontext.
+
+Example:
+Dim SavedColor As Long
+
+Private Sub Form_Load()
+        SavedColor = GetSysColor(9)
+        SetSysColors 1, 9, &hFF00FF& 'turns to purple
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+    'Restore system colors:
+    SetSysColors 1, 9, SavedColor
+End Sub
+
+
+÷÷÷÷÷÷
+Code provide by:
+    KPD-Team 1999
+    URL: http://kpdweb.cjb.net/
+    E-Mail: KPD_Team@Hotmail.com
+
+÷÷÷÷÷÷
+ 2 
+GetSysDir
+Declare Function GetSystemDirectory Lib "Kernel32" Alias "GetSystemDirectoryA" (ByVal lpBuffer As String, ByVal nSize As Long) As Long
+
+Public Function GetSysDir() As String
+Dim SysDir$, SD$
+    SysDir = Space(144)
+    SD = GetSystemDirectory(SysDir, 144)
+    GetSysDir = Trim(SysDir)
+End Function
+
+÷÷÷÷÷÷
+GetSysDir
+
+Most of the time the System-directory is in the path: C:\windows\System
+But it can be on another location. If you need the system-directory, and you
+want to be sure, then use this function
+
+Example:
+
+Dim AA$
+Private Sub Command1_Click()
+AA = GetSysDir
+Label1.Caption = AA
+End Sub
+
+÷÷÷÷÷÷
+Code in API-Guide
+÷÷÷÷÷÷
+ 2 
+GetWinDir
+Declare Function GetWindowsDirectory Lib "Kernel32" Alias "GetWindowsDirectoryA" (ByVal lpBuffer As String, ByVal nSize As Long) As Long
+
+Public Function GetWinDir()
+Dim WD&, WinDir$
+    WinDir = Space(144)
+    WD = GetWindowsDirectory(WinDir, 144)
+    GetWinDir = Trim(WinDir)
+End Function
+
+÷÷÷÷÷÷
+GetWinDir
+
+Most of the time the Windows-directory is in the path: C:\windows
+But it can be on another location. If you need the windows-directory, and you
+want to be sure, then use this function
+
+Example:
+
+Dim AA$
+Private Sub Command1_Click()
+Label1.Caption = GetWinDir
+End Sub
+
+÷÷÷÷÷÷
+Code from API-Guide
+÷÷÷÷÷÷
+ 4 
+CircleBar
+Function CircleBar(Obj As Object, cbWidth%, cbR1%, cbG1%, cbB1%, cbR2%, cbG2%, cbB2%)
+Dim CBScale%, CBrad%, cbH%, cbH2%
+Dim cbR, cbG, cbB, cbS1%, cbS2%, cbS3%
+CBScale = Obj.ScaleMode
+On Error GoTo CircleBarError
+Obj.ScaleMode = 3 'pixel
+Obj.AutoRedraw = True
+Obj.DrawWidth = 2
+If Obj.Width > Obj.Height Then
+CBrad = Int(Obj.ScaleHeight / 2) - 1
+Else
+CBrad = Int(Obj.ScaleWidth / 2) - 1
+End If
+cbH = Int(cbWidth / 2)
+cbR = (cbR2 - cbR1) / cbH
+cbG = (cbG2 - cbG1) / cbH
+cbB = (cbB2 - cbB1) / cbH
+Do While cbWidth >= cbH
+Obj.Circle (Obj.ScaleWidth / 2, Obj.ScaleHeight / 2), CBrad - cbH2, RGB(cbR1, cbG1, cbB1)
+Obj.Circle (Obj.ScaleWidth / 2, Obj.ScaleHeight / 2), CBrad - cbWidth, RGB(cbR1, cbG1, cbB1)
+cbWidth = cbWidth - 1
+cbH2 = cbH2 + 1
+cbR1 = cbR1 + cbR
+cbG1 = cbG1 + cbG
+cbB1 = cbB1 + cbB
+Loop
+CircleBarError:
+Obj.ScaleMode = CBScale
+End Function
+÷÷÷÷÷÷
+CircleBar
+
+Puts a bar in a cicle with gradient colors
+
+Syntax: CircleBar(Object, Width, RS, GS, BS, RE, GE, BE)
+
+Object: The object to put the circlebar in.
+Width: The width of the bar
+RS, GS, BS: The RGB starting color of the CircleBar
+RE, GE, BE: The RGB ending color of the CircleBar
+
+Example:
+
+Private Sub Command1_Click()
+CircleBar Form1, 50, 0, 0, 100, 192, 0, 164
+End Sub
+
+÷÷÷÷÷÷
+Code by Stephan Swertvaegher
+÷÷÷÷÷÷
+ 2 
+AutoSizeListBox
+Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Any) As Long
+Public Const LB_GETITEMHEIGHT = &H1A1
+
+Public Function AutoSizeLBHeight(LB As Object) As Boolean
+If Not TypeOf LB Is ListBox Then Exit Function
+On Error GoTo ErrHandler
+Dim lItemHeight As Long, lRet As Long, lItems As Long
+Dim sngTwips As Single, sngLBHeight As Single
+If LB.ListCount = 0 Then
+    LB.Height = 125
+    AutoSizeLBHeight = True
+    Else
+    lItems = LB.ListCount
+    lItemHeight = SendMessage(LB.hwnd, LB_GETITEMHEIGHT, 0&, 0&)
+    If lItemHeight > 0 Then
+        sngTwips = lItemHeight * Screen.TwipsPerPixelY
+        sngLBHeight = (sngTwips * lItems) + 125
+        LB.Height = sngLBHeight
+        AutoSizeLBHeight = True
+    End If
+End If
+ErrHandler:
+End Function
+
+÷÷÷÷÷÷
+AutoSizeLBHeight
+
+PURPOSE: Will automatically set the height of a listbox based on the number and height of entries
+PARAMETERS: LB = the ListBox control to autosize
+RETURNS: True if successful, false otherwise
+NOTE: LB's parent's (e.g., form, picturebox) scalemode must be vbTwips, which is the default
+
+Syntax: AutoSizeLBHeight LB
+
+LB = The ListBox
+
+Example:
+
+Private Sub Command1_Click()
+Dim xx
+For xx = 0 To 2
+List1.AddItem xx & " dit is een test"
+Next xx
+AutoSizeLBHeight List1
+End Sub
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 4 
+FrameBorder
+Public Function FrameBorder(Obj As Object, Obj2 As Object, Optional FStyle%, Optional FDist%)
+On Error GoTo FrameB2
+Dim OldScMode%, FbX1%, FbY1%, FbX2%, FbY2%, FCol1&, Fcol2&
+If Not TypeOf Obj Is Form Then Exit Function
+If IsMissing(FDist) Then FDist = 0
+If IsMissing(FStyle) Then FStyle = 0
+OldScMode = Obj.ScaleMode
+Obj.ScaleMode = 3
+Obj.AutoRedraw = True
+FbX1 = Obj2.Left - FDist - 1
+FbY1 = Obj2.Top - FDist - 1
+FbX2 = Obj2.Left + Obj2.Width + FDist + 1
+FbY2 = Obj2.Top + Obj2.Height + FDist + 1
+FCol1 = RGB(240, 240, 240)
+Fcol2 = RGB(128, 128, 128)
+If FStyle <> 0 Then
+Fcol2 = RGB(240, 240, 240)
+FCol1 = RGB(128, 128, 128)
+End If
+Obj.Line (FbX1, FbY1)-(FbX2, FbY2), FCol1, B
+Obj.Line (FbX1 - 1, FbY1 - 1)-(FbX2 - 1, FbY2 - 1), Fcol2, B
+Obj.ScaleMode = OldScMode
+FrameB2:
+End Function
+
+÷÷÷÷÷÷
+FrameBorder
+
+Puts a frame arround any control on the form
+
+Syntax: FrameBorder(Object, Object2, [FStyle], [FDist])
+
+Object: The form where the frame must be drawn
+Object2: The control to put the frame arround
+FStyle: (Optional)The style of drawing. If omitted, the FStyle will be 0.
+  0     (Default) Inset frame
+  1     Raised frame
+FDist: Distance from the 4 corners of the control. If omitted, the distance will be 0.
+
+Remarks: The frame is drawn in grey colors
+
+Examples:
+
+FrameBorder Form1, Label1, , 15
+FrameBorder Form1, Label2
+FrameBorder Form1, text1, 1
+÷÷÷÷÷÷
+Code by Stephan Swertvaegher
+÷÷÷÷÷÷
+ 2 
+PopUpInTextBox
+'In a module
+Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
+Public Const WM_RBUTTONDOWN = &H204
+
+'In a form
+Private Sub Text1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    Dim lRetVal As Long
+    If Button = vbRightButton Then
+        lRetVal = SendMessage(Me.hwnd, WM_RBUTTONDOWN, 0, 0)
+        Call PopupMenu(mnuPopUp)
+    End If
+End Sub
+
+÷÷÷÷÷÷
+PopUpInTextBox
+
+1) Copy the API-declarations in a module
+2) Copy the MouseDown-event in a form
+
+This works ONLY with a textbox !
+÷÷÷÷÷÷
+Found on the web
+Used help from a microsoft developer... who mailed me a bug in it.
+÷÷÷÷÷÷
+ 4 
+NiceText
+Public Sub NiceText(frm as form, text as string,Red as integer,Green as integer,Blue as integer,x as integer,y as integer)'x & y must be in pixels, not twips!!
+    frm.autoredraw = True
+    For z = 1 To 7
+        frm.CurrentX = ((z*15) * 5) + (x*15)
+        frm.CurrentY = ((z*15) * 5) + (y*15)
+        frm.ForeColor = RGB(z * red, z * green,z * blue)
+        frm.Print text
+    Next z
+End Sub
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+Code from Planet Source
+÷÷÷÷÷÷
+ 4 
+Grad0
+Private Function Grad0(Obj As Object, GR, GG, GB, Optional GStyle%)
+On Error Resume Next
+Dim OldScale%, Gs1, Gs2, Gs3, Gxx%
+If IsMissing(GStyle) Then GStyle = 0
+OldScale = Obj.ScaleMode
+Obj.ScaleMode = 3
+Obj.DrawWidth = 2
+Gs1 = GR / Obj.ScaleHeight
+Gs2 = GG / Obj.ScaleHeight
+Gs3 = GB / Obj.ScaleHeight
+If GStyle = 0 Then
+For Gxx = 0 To Obj.ScaleHeight
+Obj.Line (0, Gxx)-(Obj.ScaleWidth, Gxx), RGB(GR, GG, GB)
+GR = GR - Gs1
+GG = GG - Gs2
+GB = GB - Gs3
+Next Gxx
+Else
+For Gxx = Obj.ScaleHeight To 0 Step -1
+Obj.Line (0, Gxx)-(Obj.ScaleWidth, Gxx), RGB(GR, GG, GB)
+GR = GR - Gs1
+GG = GG - Gs2
+GB = GB - Gs3
+Next Gxx
+End If
+Obj.ScaleMode = OldScale
+Obj.DrawWidth = 1
+End Function
+÷÷÷÷÷÷
+Grad0
+
+Puts a gradient on the screen from the color to 0
+The object can be in any scalemode. The function takes care of that.
+
+Syntax: Grad0(Object, R, G, B, [GStyle])
+
+Object: Form or picturebox (must support the line method)
+R, G, B: The RGB values of the starting color
+GStyle: Optional. The style of the gradient. If omitted, the style willbe set to 0.
+     0: Gradient from top to bottom
+     >0: Gradient from bottom to top
+
+Example:
+
+Gradient Form1, 0, 0, 255
+Gradient Picture1, 128, 255, 64, 1
+
+÷÷÷÷÷÷
+Code by Stephan Swertvaegher
+
+
+÷÷÷÷÷÷
+ 2 
+HideScrollbars
+Private Declare Function ShowScrollBar Lib "user32" (ByVal hwnd As Long, ByVal wBar As Long, ByVal bShow As Long) As Long
+
+' hWnd is the hWnd of the control
+' wBar is 0-Hor, 1-Vertical, 3-Both
+' bShow is True or False
+
+'eg.
+
+ShowScrollBar List1.hwnd, 1, False ' hides scrollbar of list1 control on form
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 2 
+APIFunctionPresent
+Private Declare Function LoadLibrary Lib "kernel32" Alias "LoadLibraryA" (ByVal lpLibFileName As String) As Long
+Private Declare Function GetProcAddress Lib "kernel32" (ByVal hModule As Long, ByVal lpProcName As String) As Long
+Private Declare Function FreeLibrary Lib "kernel32" (ByVal hLibModule As Long) As Long
+
+Public Function APIFunctionPresent(ByVal FunctionName As String, ByVal DllName As String) As Boolean
+Dim lHandle As Long
+Dim lAddr  As Long
+lHandle = LoadLibrary(DllName)
+If lHandle <> 0 Then
+lAddr = GetProcAddress(lHandle, FunctionName)
+FreeLibrary lHandle
+End If
+APIFunctionPresent = (lAddr <> 0)
+End Function
+
+
+÷÷÷÷÷÷
+USAGE:
+Dim bAvail as boolean
+bAvail = APIFunctionPresent("GetDiskFreeSpaceExA", "kernel32")
+
+
+Examples:
+
+Private Sub Command1_Click()
+Label1.Caption = APIFunctionPresent("AppendMenu", "user32")
+End Sub
+
+Private Sub Command2_Click()
+Label1.Caption = APIFunctionPresent("FreeLibrary", "kernel32")
+End Sub
+
+÷÷÷÷÷÷
+÷÷÷÷÷÷
+ 2 
+TilePicture
+Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
+
+Public Sub Tile(Target As Object, Source As PictureBox, Optional Tilemode As Boolean)
+Dim srcH%, srcW%, Cpw%, Cph%, Tilex%, TileY%
+On Error GoTo TileError
+Target.Cls
+Target.AutoRedraw = False
+Target.ScaleMode = 3 'pixel
+Source.BorderStyle = 0
+Source.AutoSize = True
+Source.AutoRedraw = True
+Source.Visible = False
+DoEvents
+If IsMissing(Tilemode) Then Tilemode = False
+If Tilemode = True Then GoTo Tile2
+Cpw = Int(Target.ScaleWidth / Source.Width) ' + 1
+Cph = Int(Target.ScaleHeight / Source.Height) ' + 1
+For Tilex = 0 To Cpw
+For TileY = 0 To Cph
+BitBlt Target.hDC, Tilex * Source.Width, TileY * Source.Height, Source.Width, Source.Height, Source.hDC, 0, 0, &HCC0020
+Next TileY
+Next Tilex
+Exit Sub
+Tile2:
+Cpw = Int(Target.ScaleWidth / 2) - Int(Source.Width / 2)
+Cph = Int(Target.ScaleHeight / 2) - Int(Source.Height / 2)
+BitBlt Target.hDC, Cpw, Cph, Source.Width, Source.Height, Source.hDC, 0, 0, &HCC0020
+Exit Sub
+TileError:
+MsgBox "Error in Tile-routine !", vbOKOnly + vbCritical, "TilePicture"
+End Sub
+÷÷÷÷÷÷
+TilePicture
+
+Fills a form with a picture
+
+Syntax: Tile Target, Source, [Style]
+
+Target: Must be a Form or a PictureBox
+Source: Must be a PictureBox
+Style: [Optional] Style as boolean.
+       False = Fills the whole form with the same picture
+       True = Centers the picture on the form
+
+Important: Put a PictureBox on the form, and put a picture in it.
+
+Examples:
+
+Tile Form1, Picture1
+Tile Form2, Picture1, True
+Tile Form2, Form1.Picture1, False
+
+÷÷÷÷÷÷
+Coded by Stephan Swertvaegher
+÷÷÷÷÷÷
+ 2 
+GetTickCount
+' Start a new project and add a rather large
+' label, called Label1, to it.
+'----------------------------------------
+Private Declare Function GetTickCount& Lib "kernel32" ()
+Private Sub Form_Load()
+Dim h%, m%
+    ret& = GetTickCount&
+    h = Int(ret / 3600000)
+    m = Int(ret / 60000) - (h * 60)
+    Label1.Caption = "Windows has been running for " & vbCr & Str$(h) & " hours and" & Str$(m) & " minutes."
+End Sub
+
+÷÷÷÷÷÷
+This API tells you the time windows is running.
+÷÷÷÷÷÷
+÷÷÷÷÷÷
