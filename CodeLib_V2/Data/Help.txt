@@ -1,0 +1,167 @@
+CodeLib V2.0 - HELPFILES
+
+The database is a sequential file, stored in the Data-directory.
+I used a sequential file, because I hate Random-Acces files. It must be said.
+
+With this program, you can have a personal database with code snippets,
+helpfiles and notes. Once you added a code-snippet, you can add a helpfile,
+either by loading it, or by writing it yourself.
+Notes must be written, and they will be part of the database until you clear
+them. This way, you can addapt the CodeLib to your own needs.
+
+I've made place for a 1000 entries, and 100 categories.
+These are fixed values in the program. The whole program is based on this,
+so if you don't have enough, changing the dimensions will not be sufficient.
+
+1) *** The toolbar ***
+The toolbar has 11 buttons, wich will be discussed here
+
+ 1.1 Save Database
+ With this button, you can save the database. You can only save the
+ database when it's dirty, but that is marked on the screen. This button is a
+ safety, because the file will be saved - if dirty - when you leave the CodeLib.
+ But it's never wrong to save your work once and a while.
+
+ 1.2 Print Code/Helpfile
+ You can print 2 different things:
+   1) When the Code-tab is selected, it will print out the code.
+   2) If the Help-tab is selected, it will print out the helpfile.
+ Notes cannot be printed.
+
+ 1.3 Copy Code
+ This button puts the code in the ClipBoard. There's no need to select the
+ Code-tab.
+ This way it's easy to add a routine to your VB-project:
+   1) Start the CodeLib V2.0
+   2) Look for the code you want to add to your program, and hit this button.
+   3) Go back to your VB-project
+   4) Paste the code where you want to have it. Ctrl/V works !
+ A label is always telling you what code is in the clipboard.
+Important Note:
+When you copy something else (CTRL/C), let say in the help-tab, the
+Clipboard will be filled with other data, but the label will still say what
+code is in the Clipboard. So be carefull with this.
+I used the Clipboard to store the code, because it's easy, and you can
+switch between different programs like that.
+
+ 1.4 Kill Code
+ This button kills the selected code, helpfile and notes.
+ Be carefull: there's no UNDO-command, so once removed, it will be
+ lost forever.
+
+ 1.5 Rename Code
+ The selected code will be renamed. A special Rename-window pops up.
+ If the new name exists in the database, you will be notified, and asked
+ to rename again. Upper and lower case is not important. If you rename the
+ code as 'test' and 'TEST' (or 'TeSt') already exists, it will not be accepted.
+
+ 1.6 Move Code
+ This button moves the selected code to another category.
+
+ 1.7 Category
+ With this button, you can add a new category to the CodeLib.
+ If the new category already exists, you will be notified. Again, upper or
+ lowercase is not important.
+
+ 1.8 Rename Category
+ The selected category can be renamed. 
+ If the renamed category already exists, you will be notified. Again, upper
+ or lowercase is not important.
+
+ 1.9 Kill Category.
+ This button removes the selected category from the CodeLib.
+ IMPORTANT: you can only remove empty categories. If the selected 
+ category contains code-data, it can not be removed.
+
+ 1.10 Search Code/Helpfiles.
+ A new screen pops up. Here you can browse your drive(s) to search for
+ code or helpfiles. Once found, you must select the text (or part of it) to
+ add to the CodeLib. A button is provided to select all the text.
+ If you found code, press the 'copy as code'-button. In a new window,
+ you will be asked to name it and give it a category. You can only add to
+ an existing category ! If you found code that belongs in another category,
+ you must create that category first !
+ You can also replace code here. The files will be searched, and if that
+ name already exists, you will be notified. If you want to replace the code,
+ press 'Yes', else press 'No' and give the code another name.
+ If you found a help-file, press the 'copy as help'-button.
+ A new window pops up where you can select the name of the code.
+ The text will be added in the Help-section of that code.
+ If there's already a helpfile, you will be notified. If you press 'Yes', the
+ helpfile will be overwritten.
+
+ 1.11 Help
+ You are now reading it...
+
+
+2) *** The Category-Combo ***
+Here you can select the category you wish to view.
+
+
+3) *** The Name-List ***
+This list shows all the names of code in the selected category.
+Click on a name to view the code, help or notes.
+
+
+4) *** The Tab ***
+ In the tab you have 4 sections, wich will be discussed here.
+ 1.1 Code
+ When this tab is selected, you can view the code. You can't do anything
+ here. This is just a textfile to view the selected code.  You are notified here
+ if this code contains help or notes.
+
+ 1.2 Help
+ Here you can view/edit the helpfile attached to the selected code, also
+ print out the helpfile.
+ NOTE: when this tab loses the focus, it will be part of the CodeLib.
+ There's no warning, except for a little black box, telling you the help
+ is dirty.
+
+ 1.3 Notes
+ Here you can view/edit the notes attached to the selected code.
+ NOTE: when this tab loses the focus, it will be part of the CodeLib.
+ There's no warning, except for a little black box, telling you the notes
+ are dirty.
+
+ 1.4 Edit Code
+ This tab shows the selected code, but here you can edit. After editing,
+ you will be asked if this text should replace the selected code.
+ Note that there's no way to test it, so be sure before you replace !
+---------------------------------------------------------------------------------------------------------
+
+NOTES
+
+1) A black box and a label are telling you when the CodeLib is dirty.
+  Save after you worked a bit !
+
+2) When you leave the CodeLib, and the data is dirty, it will be saved, so
+  you don't have to save before you leave.
+
+3) Be sure to store the folder named 'Data' in de same directory of the
+  Codelib, because i'm using App.Path to acces this datafile.
+
+4) A right-click in the code-window shows a popup-menu, with the
+  commands:
+   * Copy
+   * Kill Code
+   * Rename Code
+   * Move Code
+
+5) This program was written in VB6-Enterprise Edition.
+  I did a great deal of thinking before I began coding this.
+  Even in the development of this program, I had some ideas
+  that could improve the whole thing. I tested the program over and
+  over again, did some extreme things, just to see how it would behave.
+  But one can never be sure... If you find bugs, or things that can be
+  improved, please let me know:
+
+  stephan.swertvaegher@planetinternet.be
+  or... Click on 'SendMail' above in the right corner.
+
+  Now it has a place in my collection of favorites, like VB4 and VB6,
+  Word, Excell, Acces, Paint Shop Pro 6, IconAlbumDeluxe, etc...
+  Hope it will be there in your favorites too...
+
+A final thing. Because you can never be sure, now and then I
+make a copy of the file CodeLib.cod. If something goes wrong,
+and I hope not, you still have a copy of the files.
